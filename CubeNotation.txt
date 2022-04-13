@@ -1,0 +1,35 @@
+# Basic Rotations (turn the side 90°  clockwise when facing it)
+
+R -> Right
+L -> Left
+U -> Up
+D -> Down
+F -> Front
+B -> Back
+
+## Modifiers
+
+R' -> the ' means opposite direction
+R2 -> the 2 means double turn (180°)
+r -> lower case means 2 layers
+Rw -> w means 2 layers
+
+## Slice Layers (Each Layer turns like the one closest to it in the alphabet)
+
+M -> L
+E -> D
+S -> F
+
+## Cube Rotations
+
+x -> R
+y -> U
+z -> F
+
+### Notes
+
+x L2 D2 L' U' L D2 L' U L'
+L U' L D2 L' U L D2 L2 x'
+
+L2 B2 L' F' L B2 L' F L'
+L F' L B2 L' F L B2 L2

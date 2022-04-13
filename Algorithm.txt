@@ -1,0 +1,8 @@
+Algorithm used to solve: CFOP
+
+CFOP is broken down into 4 steps:
+- Cross
+- F2L
+- OLL
+- PLL
+

@@ -1,0 +1,7 @@
+# Program Structure
+- App.java 
+    - the main program that controlls the other parts of the program, as in the Cube, the NotationCompiler etc.
+- Cube.java
+    - a 3x3 rubiks cube in java, plus the basic functions like the turns **(no cube rotation)** and printing the layout
+- NotationCompiler.java
+    - a program that changes the moves according to where they are supposed to be used (on the ditigal cube, in the robot etc.)
