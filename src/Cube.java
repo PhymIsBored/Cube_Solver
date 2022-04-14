@@ -702,6 +702,25 @@ public class Cube {
         }
     }
 
+    public boolean checkCompletion() {
+        char[][] correct = new char[12][9];
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 9; j++) {
+                correct[i][j] = determineColor(i, j);
+            }
+        }
+        boolean check = true;
+        for (int i = 0; i < correct.length; i++) {
+            for (int j = 0; j < correct[i].length; j++) {
+                if (correct[i][j]!=layout[i][j]) {
+                    check = false;
+                    return check;
+                }
+            }
+        }
+        return check;
+    }
+
     public char determineColor(int i, int j) { // determines what color to fill the fields with for the default position
         if (i / 3 == 0) {
             if (j / 3 == 0) {

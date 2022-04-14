@@ -10,27 +10,41 @@ public class App {
     public App() {
         cube = new Cube();
         nc = new NotationCompiler(cube);
-        cs = new CubeSolver(cube);
         cr = new CrossSolver(cube,nc);
+        cs = new CubeSolver(cube,cr);
         this.list();
     }
 
     public void list() {
-        cs.changeF2L();
+        String scramble = generateScramble();
+        System.out.println(scramble);
+        nc.executeString(scramble);
+        String input = cs.solveCube();
+        System.out.println(input);
+        nc.executeString(input);
+        System.out.println(cube.checkCompletion());
+        // test();
+    }
+
+    public void test() {
+        String test = "1#2##3#4#";
+        test = test.replaceAll("##", "#");
+        String[] split = test.split("#");
+
     }
 
     public static void main(String[] args) throws Exception {
         new App();
     }
 
-    public void generateScramble() {
+    public String generateScramble() {
         String turns = "RLUDFBMES";
         String scramble = "";
         for (int i = 0; i < ThreadLocalRandom.current().nextInt(10, 20); i++) {
             scramble = scramble + Character.toString(turns.charAt(ThreadLocalRandom.current().nextInt(turns.length())))
                     + "#";
         }
-        System.out.println(scramble);
+        return scramble;
     }
 
     public void printArray(String pInput, int pInt) {

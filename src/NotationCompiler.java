@@ -7,14 +7,14 @@ public class NotationCompiler {
         cube = pCube;
     }
 
-    public void executeString(String pInput) {
+    public void executeString(String pInput) { //convert r to Rw etc. 
         String[] split = pInput.split("#");
         for (int i = 0; i < split.length; i++) {
             this.executeTurn(split[i]);
         }
     }
 
-    public void executeTurn(String pInput) {
+    public void executeTurn(String pInput) { // add Rw double and reverse turns !!!! turn Rw into r
         switch (pInput) {
             case "x":
                 cube.rotateX();
@@ -154,36 +154,84 @@ public class NotationCompiler {
                 // System.out.println("B2");
                 break;
             // wide turns
-            case "Rw":
+            case "r":
                 cube.turnR();
                 executeTurn("M'");
-                // System.out.println("Rw");
                 break;
-            case "Lw":
+            case "r2":
+                executeTurn("r");
+                executeTurn("r");
+                break;
+            case "r'":
+                executeTurn("r");
+                executeTurn("r");
+                executeTurn("r");
+                break;
+            case "l":
                 cube.turnL();
                 executeTurn("M");
                 // System.out.println("Lw");
                 break;
-            case "Uw":
+            case "l2":
+                executeTurn("l");
+                executeTurn("l");
+                break;
+            case "l'":
+                executeTurn("l");
+                executeTurn("l");
+                executeTurn("l");
+            case "u":
                 cube.turnU();
                 executeTurn("E'");
                 // System.out.println("Uw");
                 break;
-            case "Dw":
+            case "u2":
+                executeTurn("u");
+                executeTurn("u");
+                break;
+            case "u'":
+                executeTurn("u");
+                executeTurn("u");
+                executeTurn("u");
+            case "d":
                 cube.turnD();
                 executeTurn("E");
                 // System.out.println("Dw");
                 break;
-            case "Fw":
+            case "d2":
+                executeTurn("d");
+                executeTurn("d");
+                break;
+            case "d'":
+                executeTurn("d");
+                executeTurn("d");
+                executeTurn("d");
+            case "f":
                 cube.turnF();
                 executeTurn("S");
                 // System.out.println("Fw");
                 break;
-            case "Bw":
+            case "f2":
+                executeTurn("f");
+                executeTurn("f");
+                break;
+            case "f'":
+                executeTurn("f");
+                executeTurn("f");
+                executeTurn("f");
+            case "b":
                 cube.turnB();
                 executeTurn("S'");
                 // System.out.println("Bw");
                 break;
+            case "b2":
+                executeTurn("b");
+                executeTurn("b");
+                break;
+            case "b'":
+                executeTurn("b");
+                executeTurn("b");
+                executeTurn("b");
             // slice turns
             case "M":
                 cube.turnM();
@@ -233,6 +281,7 @@ public class NotationCompiler {
                 // System.out.println("S2");
                 break;
             default:
+                System.out.println(pInput);
                 System.out.println("unknown");
                 break;
         }

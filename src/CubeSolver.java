@@ -1,28 +1,35 @@
 public class CubeSolver {
     private Cube cube;
+    private CrossSolver crossSolver;
     private String[][] F2L;
     private String[][] PLL;
     private String[][] OLL;
 
-    public CubeSolver(Cube pCube) {
+    public CubeSolver(Cube pCube, CrossSolver pCS) {
         cube = pCube;
+        crossSolver = pCS;
         F2L = new String[164][2];
         PLL = new String[21][2];
         OLL = new String[57][2];
         fillF2L();
         fillPLL();
         fillOLL();
-
     }
 
     public String solveCube() {
-        String input = null;
-        input = solveF2L();
+        String input = crossSolver.solveWhiteCross();
+        input = input + solveF2L();
         input = input + "#" + solveOLL();
         input = input + "#" + solvePLL();
         if (input.equals("")) {
             return null;
         }
+        input = replaceInput(input);
+        return input;
+    }
+
+    public String replaceInput(String input) {
+        input = input.replaceAll("##", "#");
         return input;
     }
 
@@ -58,7 +65,7 @@ public class CubeSolver {
             split = OLL[i][0].split(";");
             rO = split[0];
             rI = split[1];
-            s = compareRing(a, rO) + "|" + compareInnerRing(b, rI);
+            s = compareRingOLL(a, rO) + "|" + compareInnerRing(b, rI);
             if (s.charAt(0) == '1' && s.charAt(4) == '1' && s.charAt(2) == s.charAt(6)) { // check if rotation is the
                                                                                           // same for both rings
                 if (Character.getNumericValue(s.charAt(2)) > 0) { // this might not work, test
@@ -80,7 +87,7 @@ public class CubeSolver {
 
     public String compareInnerRing(String pRing, String pRequirement) {
         for (int i = 0; i < pRing.length(); i = i + 2) {
-            if (generateRing(pRing).equals(generateRing(pRequirement))) {
+            if (generateRingOLL(pRing).equals(generateRingOLL(pRequirement))) {
                 return "1;" + i / 2;
             }
             pRing = pRing.substring(2) + pRing.substring(0, 2);
@@ -88,9 +95,9 @@ public class CubeSolver {
         return "0;0";
     }
 
-    public String compareRing(String pRing, String pRequirement) {
+    public String compareRingOLL(String pRing, String pRequirement) {
         for (int i = 0; i < pRing.length(); i = i + 3) {
-            if (generateRing(pRing).equals(generateRing(pRequirement))) {
+            if (generateRingOLL(pRing).equals(generateRingOLL(pRequirement))) {
                 return "1;" + i / 3;
             }
             pRing = pRing.substring(3) + pRing.substring(0, 3);
@@ -98,7 +105,27 @@ public class CubeSolver {
         return "0";
     }
 
-    public String generateRing(String pInput) { // turns the ring into a comparable ring
+    public String compareRing(String pRing, String pRequirement) {
+        for (int i = 0; i < pRing.length(); i = i + 3) {
+            if (generateRingPLL(pRing).equals(generateRingPLL(pRequirement))) {
+                return "1;" + i / 3;
+            }
+            pRing = pRing.substring(3) + pRing.substring(0, 3);
+        }
+        return "0";
+    }
+
+    public String generateRingOLL(String pInput) { //turns the ring into a comparable ring for OLL
+        pInput = pInput.replace('y', '1');
+        for (int i = 0; i < pInput.length(); i++) {
+            if (pInput.charAt(i)!='y'){
+                pInput = pInput.replace(pInput.charAt(i), '2');
+            }
+        }
+        return pInput;
+    }
+
+    public String generateRingPLL(String pInput) { // turns the ring into a comparable ring for PLL
         int j = 2;
         pInput = pInput.replace(pInput.charAt(0), '1');
         for (int i = 1; i < pInput.length(); i++) {
@@ -428,11 +455,11 @@ public class CubeSolver {
         OLL[30][0] = "YXXXXXXYYXYX;XYYYYXXX";
         OLL[30][1] = "R'#U'#F#U#R#U'#R'#F'#R";
         OLL[31][0] = "XXYXYXYYXXXX;YYXXXXYY";
-        OLL[31][0] = "L#U#F'#U'#L'#U#L#F#L'";
+        OLL[31][1] = "L#U#F'#U'#L'#U#L#F#L'";
         OLL[32][0] = "YYXXXXXYYXXX;XXYYYXXY";
-        OLL[32][0] = "R#U#R'#U'#R'#F#R#F'";
+        OLL[32][1] = "R#U#R'#U'#R'#F#R#F'";
         OLL[33][0] = "XYXYXXXYXXXY;XXXYYXYY";
-        OLL[33][0] = "R#U#R2#U'#R'#F#R#U#R#U'#F'";
+        OLL[33][1] = "R#U#R2#U'#R'#F#R#U#R#U'#F'";
         OLL[34][0] = "XYXYXXXXYXYX;YXXYYYXX";
         OLL[34][1] = "R#U2#R2#F#R#F'#R#U2#R'";
         OLL[35][0] = "XXYXXXXYXYYX;YYXYYXXX";
