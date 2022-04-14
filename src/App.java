@@ -17,6 +17,7 @@ public class App {
 
     public void list() {
         String scramble = generateScramble();
+        scramble = "S#E#M#S#F#B#D#L#B#U#B#S#M#";
         System.out.println(scramble);
         nc.executeString(scramble);
         String input = cs.solveCube();
