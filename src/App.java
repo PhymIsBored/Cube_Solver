@@ -6,24 +6,27 @@ public class App {
     private NotationCompiler nc;
     private CubeSolver cs;
     private CrossSolver cr;
+    private SolveF2L sf;
 
     public App() {
         cube = new Cube();
         nc = new NotationCompiler(cube);
         cr = new CrossSolver(cube,nc);
         cs = new CubeSolver(cube,cr);
+        sf = new SolveF2L(cube, nc);
         this.list();
     }
 
     public void list() {
-        String scramble = generateScramble();
-        scramble = "S#E#M#S#F#B#D#L#B#U#B#S#M#";
-        System.out.println(scramble);
-        nc.executeString(scramble);
-        String input = cs.solveCube();
-        System.out.println(input);
-        nc.executeString(input);
-        System.out.println(cube.checkCompletion());
+        sf.checkTopCorner("2;3");
+        // String scramble = generateScramble();
+        // scramble = "S#E#M#S#F#B#D#L#B#U#B#S#M#";
+        // System.out.println(scramble);
+        // nc.executeString(scramble);
+        // String input = cs.solveCube();
+        // System.out.println(input);
+        // nc.executeString(input);
+        // System.out.println(cube.checkCompletion());
         // test();
     }
 
