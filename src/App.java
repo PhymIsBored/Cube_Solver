@@ -18,7 +18,7 @@ public class App {
     }
 
     public void list() {
-        sf.checkTopCorner("2;3");
+        sf.lineUpCorner("wgr", "5;8");
         // String scramble = generateScramble();
         // scramble = "S#E#M#S#F#B#D#L#B#U#B#S#M#";
         // System.out.println(scramble);

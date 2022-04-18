@@ -171,13 +171,13 @@ public class CubeSolver {
         return ring;
     }
 
-    public String solveF2L() {
+    public String solveF2L() { //this might not alway work
         String input = null;
         for (int i = 0; i < F2L.length; i++) {
             if (checkRequirments(F2L[i][0])) {
                 input = F2L[i][1];
             } else {
-                // System.out.println("Nothing found at "+i);
+                System.out.println("Nothing found at "+i);
             }
         }
         return input;
