@@ -9,32 +9,332 @@ public class SolveF2L {
         block = new String[4];
     }
 
-    public void solveWhiteBottom() {
-        String input = null;
-        String[][] pos = findWhiteBlock();
-        // check top corner
-        // if one of the coordinates == findTopSide
-        int counter = 0;
-        while (checkTopCorner(pos[0][1], pos)) {
-            counter++;
-            nc.executeTurn("U");
+    public void solveF2L() {
+        String input = "";
+        while (solveWhiteBottom() != null) {
+            System.out.println(solveWhiteBottom());
+            input = input + solveWhiteBottom();
+            nc.executeString(solveWhiteBottom());
         }
-        if (counter == 0) {
-            input = "";
-        } else if (counter == 1) {
-            input = "U";
-            nc.executeTurn("U'");
-        } else if (counter==2) {
-            input = "U2";
-            nc.executeTurn("U2");
-        } else if (counter == 3) {
-            input = "U'";
-            nc.executeTurn("U");
+        while (solveWhiteTop() != null) {
+            input = input + solveWhiteTop();
+            nc.executeString(solveWhiteTop());
         }
+        System.out.println(input);
     }
 
-    public boolean checkTopCorner(String iaj, String[][] pos) {
+    public String solveWhiteBottom() {
+        String input = null;
+        String[][] pos = findWhiteBlock();
+        String iaj = null;
+        for (int i = 0; i < pos.length; i++) {
+            if (isElementOfBlock(pos[i][1])) {
+                continue;
+            }
+            if (pos[i][1].equals("3;3") || pos[i][1].equals("3;5") || pos[i][1].equals("5;3")
+                    || pos[i][1].equals("5;5")) { // is in white
+                iaj = getCornerCoordinates(pos[i][1])[0] + ";" + getCornerCoordinates(pos[i][1])[1];
+            } else {
+                iaj = pos[i][1];
+            }
+            if (turnDirectionTop(iaj) == null) { // is actually at the bottom
+                continue;
+            }
+            int counter = 0;
+            while (checkTopCorner(pos[i][1])) {
+                counter++;
+                nc.executeTurn("U");
+            }
+            if (counter == 0) {
+                input = "";
+            } else if (counter == 1) {
+                input = "U#";
+                nc.executeTurn("U'");
+            } else if (counter == 2) {
+                input = "U2#";
+                nc.executeTurn("U2");
+            } else if (counter == 3) {
+                input = "U'#";
+                nc.executeTurn("U");
+            }
+            if (getSide(iaj) == 'o') {
+                input = input + "F";
+            } else if (getSide(iaj) == 'g') {
+                input = input + "L";
+            } else if (getSide(iaj) == 'b') {
+                input = input + "R";
+            } else if (getSide(iaj) == 'r') {
+                input = input + "B";
+            }
+            input = input + turnDirectionTop(iaj) + "#U" + turnDirectionTop(iaj) + "#";
+            if (getSide(iaj) == 'o') {
+                input = input + "F";
+            } else if (getSide(iaj) == 'g') {
+                input = input + "L";
+            } else if (getSide(iaj) == 'b') {
+                input = input + "R";
+            } else if (getSide(iaj) == 'r') {
+                input = input + "B";
+            }
+            if (!turnDirectionTop(iaj).equals("'")) {
+                input = input + "'#";
+            } else {
+                input = input + "#";
+            }
+            return input;
+        }
+        return null;
+    }
+
+    public String solveWhiteTop() {
+        String input = null;
+        String[][] pos = findWhiteBlock();
+        for (int i = 0; i < pos.length; i++) {
+            if (isElementOfBlock(pos[i][1])) {
+                continue;
+            }
+            if (findTopSide(pos[i][1]) != null) {
+                continue;
+            }
+            input = lineUpCorner(pos[i][0], pos[i][1]);
+            if (getSide(pos[i][1]) == 'y') { // is in yellow
+                if (getSide(pos[i][1]) == 'o') {
+                    input = input + "F";
+                } else if (getSide(pos[i][1]) == 'g') {
+                    input = input + "L";
+                } else if (getSide(pos[i][1]) == 'b') {
+                    input = input + "R";
+                } else if (getSide(pos[i][1]) == 'r') {
+                    input = input + "B";
+                }
+                input = input + turnDirectionTopTop(pos[i][1]) + "#U2#";
+                if (getSide(pos[i][1]) == 'o') {
+                    input = input + "F";
+                } else if (getSide(pos[i][1]) == 'g') {
+                    input = input + "L";
+                } else if (getSide(pos[i][1]) == 'b') {
+                    input = input + "R";
+                } else if (getSide(pos[i][1]) == 'r') {
+                    input = input + "B";
+                }
+                if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
+                    input = input + "'#U'#";
+                } else {
+                    input = input + "#U#";
+                }
+                if (getSide(pos[i][1]) == 'o') {
+                    input = input + "F";
+                } else if (getSide(pos[i][1]) == 'g') {
+                    input = input + "L";
+                } else if (getSide(pos[i][1]) == 'b') {
+                    input = input + "R";
+                } else if (getSide(pos[i][1]) == 'r') {
+                    input = input + "B";
+                }
+                input = input + turnDirectionTopTop(pos[i][1]) + "#U" + turnDirectionTopTop(pos[i][1]) + "#";
+                if (getSide(pos[i][1]) == 'o') {
+                    input = input + "F";
+                } else if (getSide(pos[i][1]) == 'g') {
+                    input = input + "L";
+                } else if (getSide(pos[i][1]) == 'b') {
+                    input = input + "R";
+                } else if (getSide(pos[i][1]) == 'r') {
+                    input = input + "B";
+                }
+                if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
+                    input = input + "'#";
+                } else {
+                    input = input + "#";
+                }
+                return input;
+            } else {
+                if (getSide(pos[i][1]) == 'o') {
+                    input = input + "F";
+                } else if (getSide(pos[i][1]) == 'g') {
+                    input = input + "L";
+                } else if (getSide(pos[i][1]) == 'b') {
+                    input = input + "R";
+                } else if (getSide(pos[i][1]) == 'r') {
+                    input = input + "B";
+                }
+                input = input + turnDirectionTopTop(pos[i][1]) + "#U" + turnDirectionTopTop(pos[i][1]) + "#";
+                if (getSide(pos[i][1]) == 'o') {
+                    input = input + "F";
+                } else if (getSide(pos[i][1]) == 'g') {
+                    input = input + "L";
+                } else if (getSide(pos[i][1]) == 'b') {
+                    input = input + "R";
+                } else if (getSide(pos[i][1]) == 'r') {
+                    input = input + "B";
+                }
+                if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
+                    input = input + "'#";
+                } else {
+                    input = input + "#";
+                }
+                return input;
+            }
+        }
+        return null;
+    }
+
+    public int getNewSide(String colour) {
+        String ring = "ogrb";
+        int counter = 0;
+        for (int i = 0; i < ring.length(); i++) {
+            if (colour.contains(ring.substring(0,1))) {
+                break;
+            }
+            ring = ring.substring(1);
+            counter++;
+        }
+        return counter;
+    }
+
+    public String getInbetweenSide(String iaj) {
+        String side = "";
+        String a = iaj;
+        String b = getCornerCoordinates(iaj)[0] + ";" + getCornerCoordinates(iaj)[1];
+        String c = getCornerCoordinates(iaj)[2] + ";" + getCornerCoordinates(iaj)[3];
+        char[] S = new char[3];
+        S[0] = getSide(a);
+        S[1] = getSide(b);
+        S[2] = getSide(c);
+        for (char i : S) {
+            if (i == 'y' || i == 'w') {
+            } else {
+                side = side + i;
+            }
+        }
+        return side;
+    }
+
+    // colours = wgo
+    public String lineUpCorner(String colours, String side) { // side gets converted from iaj to colours
+        side = getInbetweenSide(side);
+        String ring = "ogrb";
+        String a = null;
+        String b = null;
+        for (int i = 0; i < ring.length(); i++) {
+            a = "" + ring.charAt(0);
+            b = "" + ring.charAt(1);
+            if (side.contains(a) && side.contains(b)) {
+                break;
+            }
+            ring = ring.substring(1) + ring.charAt(0);
+        }
+        int counter = 0;
+        for (int i = 0; i < ring.length(); i++) {
+            a = "" + ring.charAt(0);
+            b = "" + ring.charAt(1);
+            if (colours.contains(a) && colours.contains(b)) {
+                counter = i;
+                break;
+            }
+            ring = ring.substring(1) + ring.charAt(0);
+        }
+        if (counter == 0) {
+            return "";
+        } else if (counter == 1) {
+            return "U#";
+        } else if (counter == 2) {
+            return "U2#";
+        } else if (counter == 3) {
+            return "U'#";
+        }
+        return null;
+    }
+
+    public char getSide(String iaj) { // returns the side of the cube as a color, assuming the default position
+        int one = Integer.parseInt(iaj.substring(0, iaj.indexOf(";")));
+        int two = Integer.parseInt(iaj.substring(iaj.indexOf(";") + 1));
+        iaj = one / 3 + ";" + two / 3;
+        if (iaj.equals("0;1")) {
+            return 'o';
+        } else if (iaj.equals("1;0")) {
+            return 'g';
+        } else if (iaj.equals("1;1")) {
+            return 'w';
+        } else if (iaj.equals("1;2")) {
+            return 'b';
+        } else if (iaj.equals("2;1")) {
+            return 'r';
+        } else if (iaj.equals("3;1")) {
+            return 'y';
+        }
+        return '!';
+    }
+
+    public String turnDirectionTop(String iaj) { // returns if the turn to top is ' or non modified
+        String c = null;
+        switch (iaj) {
+            case "3;2": // green
+                c = "'";
+                break;
+            case "5;2":
+                c = "";
+                break;
+            case "2;3": // orange
+                c = "";
+                break;
+            case "2;5":
+                c = "'";
+                break;
+            case "3;6": // blue
+                c = "";
+                break;
+            case "5;6":
+                c = "'";
+                break;
+            case "6;3": // red
+                c = "'";
+                break;
+            case "6;5":
+                c = "";
+                break;
+            default:
+                break;
+        }
+        return c;
+    }
+
+    public String turnDirectionTopTop(String iaj) { // returns if the turn to top is ' or non modified
+        String c = null;
+        switch (iaj) {
+            case "3;0": // green
+                c = "'";
+                break;
+            case "5;0":
+                c = "";
+                break;
+            case "0;3": // orange
+                c = "";
+                break;
+            case "0;5":
+                c = "'";
+                break;
+            case "3;8": // blue
+                c = "";
+                break;
+            case "5;8":
+                c = "'";
+                break;
+            case "8;3": // red
+                c = "'";
+                break;
+            case "8;5":
+                c = "";
+                break;
+            default:
+                break;
+        }
+        return c;
+    }
+
+    public boolean checkTopCorner(String iaj) { // actually check the top lol
         String c = null; // coordinates
+        String[][] pos = findWhiteBlock();
+        iaj = findTopSide(iaj)[0] + ";" + findTopSide(iaj)[1];
         for (int i = 0; i < pos.length; i++) {
             if (iaj.equals(pos[i][1])) { // is it the same as the white coordinates
                 c = pos[i][1];
@@ -51,6 +351,15 @@ public class SolveF2L {
             int a = Integer.parseInt(c.substring(0, c.indexOf(";")));
             int b = Integer.parseInt(c.substring(c.indexOf(";") + 1));
             if (a / 3 == 3 && b / 3 == 1) { // are the coordinates in yellow
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isElementOfBlock(String iaj) {
+        for (int i = 0; i < block.length; i++) {
+            if (iaj.equals(block[i])) {
                 return true;
             }
         }
@@ -256,7 +565,7 @@ public class SolveF2L {
             int[] array = { 0, 5, 3, 8 };
             pos = array;
         }
-        if (pos[3] == 0) {
+        if (pos[2] == 0) {
             return null;
         }
         return pos;
