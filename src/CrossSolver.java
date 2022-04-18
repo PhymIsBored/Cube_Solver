@@ -13,15 +13,15 @@ public class CrossSolver {
     public String solveWhiteCross() {
         String input = orientCube(); //orient cube executes the moves in the function
         while (solveWhiteBottom() != null) {
-            input = input + "#" + solveWhiteBottom();
+            input = input + solveWhiteBottom();
             nc.executeString(solveWhiteBottom());
         }
         while (solveWhiteSide() != null) {
-            input = input + "#" + solveWhiteSide();
+            input = input + solveWhiteSide();
             nc.executeString(solveWhiteSide());
         }
         while (solveWhiteTop() != null) {
-            input = input + "#" + solveWhiteTop();
+            input = input + solveWhiteTop();
             nc.executeString(solveWhiteTop());
         }
         return input;
@@ -139,13 +139,13 @@ public class CrossSolver {
                     }
                     char pSide = getSide(getEdgeCoordinates(pos[i][1]));
                     if (pSide == 'o') {
-                        input = input + "F2";
+                        input = input + "F2#";
                     } else if (pSide == 'g') {
-                        input = input + "L2";
+                        input = input + "L2#";
                     } else if (pSide == 'r') {
-                        input = input + "B2";
+                        input = input + "B2#";
                     } else if (pSide == 'b') {
-                        input = input + "R2";
+                        input = input + "R2#";
                     }
                     return input;
                 }
@@ -204,7 +204,9 @@ public class CrossSolver {
                     }
                     if (!turnDirectionTop(getEdgeCoordinates(pos[i][1])).equals("'")) { // which direction to turn
                                                                                         // (normal or reverse)
-                        input = input + "'";
+                        input = input + "'#";
+                    } else {
+                        input = input + "#";
                     }
                     return input;
                 } else {
@@ -242,13 +244,13 @@ public class CrossSolver {
                             }
                             char pSide = getSide(pos[i][1]); // turns it to the side
                             if (pSide == 'o') {
-                                input = input + "F";
+                                input = input + "F#";
                             } else if (pSide == 'g') {
-                                input = input + "L";
+                                input = input + "L#";
                             } else if (pSide == 'r') {
-                                input = input + "B";
+                                input = input + "B#";
                             } else if (pSide == 'b') {
-                                input = input + "R";
+                                input = input + "R#";
                             }
                         } else { // if it is the top side
                             one = Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";")));
@@ -280,13 +282,13 @@ public class CrossSolver {
                             }
                             char pSide = getSide(pos[i][1]); // turns it to the side
                             if (pSide == 'o') {
-                                input = input + "F";
+                                input = input + "F#";
                             } else if (pSide == 'g') {
-                                input = input + "L";
+                                input = input + "L#";
                             } else if (pSide == 'r') {
-                                input = input + "B";
+                                input = input + "B#";
                             } else if (pSide == 'b') {
-                                input = input + "R";
+                                input = input + "R#";
                             }
                         }
                     } else { // if its on the side (not on the top side)
@@ -323,7 +325,7 @@ public class CrossSolver {
                         } else if (pSide == 'b') {
                             input = input + "R";
                         }
-                        input = input + turnDirectionTop(getEdgeCoordinates(pos[i][1]));
+                        input = input + turnDirectionTop(getEdgeCoordinates(pos[i][1])) + "#";
                     }
                 }
                 if (input.equals("null")) {

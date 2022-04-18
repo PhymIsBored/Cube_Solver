@@ -97,24 +97,25 @@ public class SolveF2L {
                 continue;
             }
             input = lineUpCorner(pos[i][0], pos[i][1]);
-            if (getSide(pos[i][1]) == 'y') { // is in yellow
-                if (getSide(pos[i][1]) == 'o') {
+            char side = getNewSide(pos[i][0]);
+            if (side == 'y') { // is in yellow
+                if (side == 'o') {
                     input = input + "F";
-                } else if (getSide(pos[i][1]) == 'g') {
+                } else if (side == 'g') {
                     input = input + "L";
-                } else if (getSide(pos[i][1]) == 'b') {
+                } else if (side == 'b') {
                     input = input + "R";
-                } else if (getSide(pos[i][1]) == 'r') {
+                } else if (side == 'r') {
                     input = input + "B";
                 }
-                input = input + turnDirectionTopTop(pos[i][1]) + "#U2#";
-                if (getSide(pos[i][1]) == 'o') {
+                input = input + turnDirectionTopTop(pos[i][1]) + "#U2#"; // update this with new location !!!!!!!!!!!!!!!!!!
+                if (side == 'o') {
                     input = input + "F";
-                } else if (getSide(pos[i][1]) == 'g') {
+                } else if (side == 'g') {
                     input = input + "L";
-                } else if (getSide(pos[i][1]) == 'b') {
+                } else if (side == 'b') {
                     input = input + "R";
-                } else if (getSide(pos[i][1]) == 'r') {
+                } else if (side == 'r') {
                     input = input + "B";
                 }
                 if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
@@ -122,23 +123,23 @@ public class SolveF2L {
                 } else {
                     input = input + "#U#";
                 }
-                if (getSide(pos[i][1]) == 'o') {
+                if side == 'o') {
                     input = input + "F";
-                } else if (getSide(pos[i][1]) == 'g') {
+                } else if (side == 'g') {
                     input = input + "L";
-                } else if (getSide(pos[i][1]) == 'b') {
+                } else if (side == 'b') {
                     input = input + "R";
-                } else if (getSide(pos[i][1]) == 'r') {
+                } else if (side == 'r') {
                     input = input + "B";
                 }
                 input = input + turnDirectionTopTop(pos[i][1]) + "#U" + turnDirectionTopTop(pos[i][1]) + "#";
-                if (getSide(pos[i][1]) == 'o') {
+                if (side == 'o') {
                     input = input + "F";
-                } else if (getSide(pos[i][1]) == 'g') {
+                } else if (side == 'g') {
                     input = input + "L";
-                } else if (getSide(pos[i][1]) == 'b') {
+                } else if (side == 'b') {
                     input = input + "R";
-                } else if (getSide(pos[i][1]) == 'r') {
+                } else if (side) == 'r') {
                     input = input + "B";
                 }
                 if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
@@ -148,23 +149,23 @@ public class SolveF2L {
                 }
                 return input;
             } else {
-                if (getSide(pos[i][1]) == 'o') {
+                if (side == 'o') {
                     input = input + "F";
-                } else if (getSide(pos[i][1]) == 'g') {
+                } else if (side == 'g') {
                     input = input + "L";
-                } else if (getSide(pos[i][1]) == 'b') {
+                } else if (side == 'b') {
                     input = input + "R";
-                } else if (getSide(pos[i][1]) == 'r') {
+                } else if (side == 'r') {
                     input = input + "B";
                 }
                 input = input + turnDirectionTopTop(pos[i][1]) + "#U" + turnDirectionTopTop(pos[i][1]) + "#";
-                if (getSide(pos[i][1]) == 'o') {
+                if (side == 'o') {
                     input = input + "F";
-                } else if (getSide(pos[i][1]) == 'g') {
+                } else if (side == 'g') {
                     input = input + "L";
-                } else if (getSide(pos[i][1]) == 'b') {
+                } else if (side == 'b') {
                     input = input + "R";
-                } else if (getSide(pos[i][1]) == 'r') {
+                } else if (side == 'r') {
                     input = input + "B";
                 }
                 if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
@@ -178,17 +179,21 @@ public class SolveF2L {
         return null;
     }
 
-    public int getNewSide(String colour) {
+    public char getNewSide(String colour) {
         String ring = "ogrb";
-        int counter = 0;
+        char n = 0;
+        String a = null;
+        String b = null;
         for (int i = 0; i < ring.length(); i++) {
-            if (colour.contains(ring.substring(0,1))) {
+            a = "" + ring.charAt(0);
+            b = "" + ring.charAt(1);
+            if (colour.contains(a) && colour.contains(b)) {
+                n = ring.charAt(0);
                 break;
             }
-            ring = ring.substring(1);
-            counter++;
+            ring = ring.substring(1) + ring.charAt(0);
         }
-        return counter;
+        return n;
     }
 
     public String getInbetweenSide(String iaj) {

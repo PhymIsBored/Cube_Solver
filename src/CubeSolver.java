@@ -1,13 +1,15 @@
 public class CubeSolver {
     private Cube cube;
+    private NotationCompiler nc;
     private CrossSolver crossSolver;
     private String[][] F2L;
     private String[][] PLL;
     private String[][] OLL;
 
-    public CubeSolver(Cube pCube, CrossSolver pCS) {
+    public CubeSolver(Cube pCube, CrossSolver pCS, NotationCompiler pNC) {
         cube = pCube;
         crossSolver = pCS;
+        nc = pNC;
         F2L = new String[164][2];
         PLL = new String[21][2];
         OLL = new String[57][2];
@@ -18,9 +20,16 @@ public class CubeSolver {
 
     public String solveCube() {
         String input = crossSolver.solveWhiteCross();
+        System.out.println(input);
         input = input + solveF2L();
+        System.out.println(input); //test
+        nc.executeString(solveF2L());
         input = input + "#" + solveOLL();
+        System.out.println(input); //test
+        nc.executeString(solveOLL());
         input = input + "#" + solvePLL();
+        System.out.println(input); //test
+        nc.executeString(solvePLL());
         if (input.equals("")) {
             return null;
         }
@@ -176,8 +185,6 @@ public class CubeSolver {
         for (int i = 0; i < F2L.length; i++) {
             if (checkRequirments(F2L[i][0])) {
                 input = F2L[i][1];
-            } else {
-                System.out.println("Nothing found at "+i);
             }
         }
         return input;
