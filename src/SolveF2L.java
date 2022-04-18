@@ -123,7 +123,7 @@ public class SolveF2L {
                 } else {
                     input = input + "#U#";
                 }
-                if side == 'o') {
+                if (side == 'o') {
                     input = input + "F";
                 } else if (side == 'g') {
                     input = input + "L";
@@ -139,7 +139,7 @@ public class SolveF2L {
                     input = input + "L";
                 } else if (side == 'b') {
                     input = input + "R";
-                } else if (side) == 'r') {
+                } else if (side == 'r') {
                     input = input + "B";
                 }
                 if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
