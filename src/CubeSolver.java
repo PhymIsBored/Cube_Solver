@@ -21,9 +21,12 @@ public class CubeSolver {
     public String solveCube() {
         String input = crossSolver.solveWhiteCross();
         System.out.println(input);
-        input = input + solveF2L();
-        System.out.println(input); //test
-        nc.executeString(solveF2L());
+        while (solveF2L()!=null) {
+            input = input + solveF2L();
+            System.out.println(input); //test
+            nc.executeString(solveF2L()); 
+            cube.printCubeLayout();   
+        }
         input = input + "#" + solveOLL();
         System.out.println(input); //test
         nc.executeString(solveOLL());
@@ -185,15 +188,13 @@ public class CubeSolver {
         for (int i = 0; i < F2L.length; i++) {
             if (checkRequirments(F2L[i][0])) {
                 input = F2L[i][1];
+                break;
             }
         }
         return input;
     }
 
     public boolean checkRequirments(String pInput) {
-        if (pInput.length() < 5) { // checks if the input is empty; remove later
-            return false;
-        }
         String[] split = pInput.split("&");
         int counter = 0;
         String r = null;

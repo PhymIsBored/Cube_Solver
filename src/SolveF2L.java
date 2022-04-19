@@ -17,6 +17,7 @@ public class SolveF2L {
             nc.executeString(solveWhiteBottom());
         }
         while (solveWhiteTop() != null) {
+            System.out.println(solveWhiteTop());
             input = input + solveWhiteTop();
             nc.executeString(solveWhiteTop());
         }
@@ -89,6 +90,7 @@ public class SolveF2L {
     public String solveWhiteTop() {
         String input = null;
         String[][] pos = findWhiteBlock();
+        blockGood(pos);
         for (int i = 0; i < pos.length; i++) {
             if (isElementOfBlock(pos[i][1])) {
                 continue;
@@ -97,8 +99,21 @@ public class SolveF2L {
                 continue;
             }
             input = lineUpCorner(pos[i][0], pos[i][1]);
-            char side = getNewSide(pos[i][0]);
+            char side = getSide(pos[i][1]);
             if (side == 'y') { // is in yellow
+                String s = getCornerCoordinates(pos[i][1])[0] + ";" + getCornerCoordinates(pos[i][1])[1];
+                side = getSide(s);
+                side = getNewSide(pos[i][0], turnDirectionTopTop(s));
+                if (side == 'o') {  //these are different 
+                    input = input + "F";
+                } else if (side == 'g') {
+                    input = input + "L";
+                } else if (side == 'b') {
+                    input = input + "R";
+                } else if (side == 'r') {
+                    input = input + "B";
+                }
+                input = input + turnDirectionTopTop(s) + "#U2#";
                 if (side == 'o') {
                     input = input + "F";
                 } else if (side == 'g') {
@@ -108,17 +123,7 @@ public class SolveF2L {
                 } else if (side == 'r') {
                     input = input + "B";
                 }
-                input = input + turnDirectionTopTop(pos[i][1]) + "#U2#"; // update this with new location !!!!!!!!!!!!!!!!!!
-                if (side == 'o') {
-                    input = input + "F";
-                } else if (side == 'g') {
-                    input = input + "L";
-                } else if (side == 'b') {
-                    input = input + "R";
-                } else if (side == 'r') {
-                    input = input + "B";
-                }
-                if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
+                if (!turnDirectionTopTop(s).equals("'")) {
                     input = input + "'#U'#";
                 } else {
                     input = input + "#U#";
@@ -132,7 +137,7 @@ public class SolveF2L {
                 } else if (side == 'r') {
                     input = input + "B";
                 }
-                input = input + turnDirectionTopTop(pos[i][1]) + "#U" + turnDirectionTopTop(pos[i][1]) + "#";
+                input = input + turnDirectionTopTop(s) + "#U" + turnDirectionTopTop(s) + "#";
                 if (side == 'o') {
                     input = input + "F";
                 } else if (side == 'g') {
@@ -142,13 +147,14 @@ public class SolveF2L {
                 } else if (side == 'r') {
                     input = input + "B";
                 }
-                if (!turnDirectionTopTop(pos[i][1]).equals("'")) {
+                if (!turnDirectionTopTop(s).equals("'")) {
                     input = input + "'#";
                 } else {
                     input = input + "#";
                 }
                 return input;
             } else {
+                side = getNewSide(pos[i][0], turnDirectionTopTop(pos[i][1]));
                 if (side == 'o') {
                     input = input + "F";
                 } else if (side == 'g') {
@@ -179,7 +185,7 @@ public class SolveF2L {
         return null;
     }
 
-    public char getNewSide(String colour) {
+    public char getNewSide(String colour,String order) {
         String ring = "ogrb";
         char n = 0;
         String a = null;
@@ -188,6 +194,10 @@ public class SolveF2L {
             a = "" + ring.charAt(0);
             b = "" + ring.charAt(1);
             if (colour.contains(a) && colour.contains(b)) {
+                if (order.equals("'")) {
+                    n = ring.charAt(1);
+                    break;
+                }
                 n = ring.charAt(0);
                 break;
             }

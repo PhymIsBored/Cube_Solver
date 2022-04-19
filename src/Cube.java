@@ -712,7 +712,7 @@ public class Cube {
         boolean check = true;
         for (int i = 0; i < correct.length; i++) {
             for (int j = 0; j < correct[i].length; j++) {
-                if (correct[i][j]!=layout[i][j]) {
+                if (correct[i][j] != layout[i][j]) {
                     check = false;
                     return check;
                 }
@@ -812,7 +812,7 @@ public class Cube {
                 if (layout[i][j] == pSide) {
                     int ci = i / 3;
                     int cj = j / 3;
-                    String r = Integer.toString(ci) + ";" + Integer.toString(cj);
+                    String r = ci + ";" + cj;
                     return r;
                 }
             }
@@ -821,7 +821,7 @@ public class Cube {
     }
 
     public boolean checkRequired(String r, String pCoordinate, char pColor) {
-        //String iaj = i + ";" + j;
+        // String iaj = i + ";" + j;
         r = findCoordinates(r, pCoordinate);
         String[] split = r.split(";");
         int x = Integer.parseInt(split[0]);
@@ -832,16 +832,17 @@ public class Cube {
             return false;
         }
     }
+
     public char getColour(int i, int j) {
         return layout[i][j];
     }
 
-    public String findCoordinates(String iaj, String pCoordinate) {
+    public String findCoordinates(String iaj, String pCoordinate) { // doesnt account for cube rotations in yellow
         pCoordinate = pCoordinate.toUpperCase();
         String r = null;
         switch (iaj) {
             case "0;1":
-                r = (pCoordinate.charAt(0) - 65) + ";" + (3 + pCoordinate.charAt(1) - 49);
+                r = (pCoordinate.charAt(1) - 49) + ";" + (3 + pCoordinate.charAt(0) - 65);
                 break;
             case "1;0":
                 r = (5 - (pCoordinate.charAt(0) - 65)) + ";" + (char) (pCoordinate.charAt(1) - 1);
@@ -856,7 +857,15 @@ public class Cube {
                 r = (6 + (51 - pCoordinate.charAt(1))) + ";" + (3 + (67 - pCoordinate.charAt(0)));
                 break;
             case "3;1":
-                r = (9 + (51 - pCoordinate.charAt(1))) + ";" + (3 + (67 - pCoordinate.charAt(0)));
+                if (layout[7][4] == 'r') {
+                    r = (9 + (51 - pCoordinate.charAt(1))) + ";" + (3 + (67 - pCoordinate.charAt(0)));
+                } else if (layout[7][4] == 'g') {
+                    r = (9 + (67 - pCoordinate.charAt(0))) + ";" + (3 + (pCoordinate.charAt(1) - 49));
+                } else if (layout[7][4] == 'o') {
+                    r = (9 + (pCoordinate.charAt(1) - 49)) + ";" + (3 + (pCoordinate.charAt(0) - 65));
+                } else if (layout[7][4] == 'b') {
+                    r = (9 + (pCoordinate.charAt(0) - 65)) + ";" + (3 + 51 - (pCoordinate.charAt(1)));
+                }
                 break;
             default:
                 // do nothing

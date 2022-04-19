@@ -11,18 +11,15 @@ public class App {
     public App() {
         cube = new Cube();
         nc = new NotationCompiler(cube);
-        cr = new CrossSolver(cube,nc);
-        cs = new CubeSolver(cube,cr,nc);
+        cr = new CrossSolver(cube, nc);
+        cs = new CubeSolver(cube, cr, nc);
         sf = new SolveF2L(cube, nc);
         this.list();
     }
 
     public void list() {
-        // nc.executeString("M2#S2#E2");
-        // System.out.println(cr.solveWhiteCross());
-        // sf.solveF2L();
-        // cube.printCubeLayout();
-        sf.getNewSide("wbo");
+        nc.executeString("L'#U'#L#U#L'#U2#L");
+        sf.solveF2L();
     }
 
     public void test() {
