@@ -2,11 +2,13 @@ public class SolveF2L {
     private Cube cube;
     private NotationCompiler nc;
     private String[] block;
+    private String[] blockMid;
 
     public SolveF2L(Cube pCube, NotationCompiler pNotationCompiler) {
         cube = pCube;
         nc = pNotationCompiler;
         block = new String[4];
+        blockMid = new String[4];
     }
 
     public void solveF2L() {
@@ -21,7 +23,7 @@ public class SolveF2L {
             input = input + solveWhiteTop();
             nc.executeString(solveWhiteTop());
         }
-        System.out.println(input);
+        System.out.println("Full: " + input);
     }
 
     public String solveWhiteBottom() {
@@ -104,7 +106,7 @@ public class SolveF2L {
                 String s = getCornerCoordinates(pos[i][1])[0] + ";" + getCornerCoordinates(pos[i][1])[1];
                 side = getSide(s);
                 side = getNewSide(pos[i][0], turnDirectionTopTop(s));
-                if (side == 'o') {  //these are different 
+                if (side == 'o') { // these are different
                     input = input + "F";
                 } else if (side == 'g') {
                     input = input + "L";
@@ -185,7 +187,232 @@ public class SolveF2L {
         return null;
     }
 
-    public char getNewSide(String colour,String order) {
+    public String solveSides() {
+        // check if they are in the correct place
+        // if not move them up and
+        // call F2L and rotate U until it solves
+        String[][] pos = findEdges();
+        blockEdges(pos);
+        String input = "";
+        for (int i = 0; i < pos.length; i++) {
+            if (isElementOfBlockMid(pos[i][1])) {
+                continue;
+            }
+            // get position of edge
+            String s = getSide(pos[i][1]) + "" + getSide(getEdgeCoordinates(pos[i][1]));
+            if (s.contains("o") && s.contains("g")) {
+                for (int j = 0; j < 4; j++) {
+                    if (cube.getColour(10, 5) == 'y' || cube.getColour(4, 8) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "L'#U#L#U#F#U'#F'#\n";
+                        break; // break if works
+                    } else if (cube.getColour(9, 4) == 'y' || cube.getColour(8, 4) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "F#U'#F'#U'#L'#U#L#\n";
+                        break; // break if works
+                    } else {
+                        cube.turnU();
+                    }
+                }
+            } else if (s.contains("r") && s.contains("g")) {
+                for (int j = 0; j < 4; j++) {
+                    if (cube.getColour(11, 4) == 'y' || cube.getColour(0, 4) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "B'#U#B#U#L#U'#L'#\n";
+                        break; // break if works
+                    } else if (cube.getColour(10, 5) == 'y' || cube.getColour(4, 8) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "L#U'#L'#U'#B'#U#B#\n";
+                        break; // break if works
+                    } else {
+                        cube.turnU();
+                    }
+                }
+            } else if (s.contains("r") && s.contains("b")) {
+                for (int j = 0; j < 4; j++) {
+                    if (cube.getColour(10, 3) == 'y' || cube.getColour(4, 0) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "B#U'#B'#U'#R'#U#R#\n";
+                        break; // break if works
+                    } else if (cube.getColour(11, 4) == 'y' || cube.getColour(0, 4) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "R'#U#R#U#B#U'#B'#\n";
+                        break; // break if works
+                    } else {
+                        cube.turnU();
+                    }
+                }
+            } else if (s.contains("o") && s.contains("b")) {
+                for (int j = 0; j < 4; j++) {
+                    if (cube.getColour(8, 4) == 'y' || cube.getColour(9, 4) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "F'#U#F#U#R#U'#R'#\n";
+                        break; // break if works
+                    } else if (cube.getColour(10, 3) == 'y' || cube.getColour(4, 0) == 'y') {
+                        if (i == 1) {
+                            input = input + "U#";
+                            nc.executeTurn("U'");
+                        } else if (i == 2) {
+                            input = input + "U2#";
+                            nc.executeTurn("U2");
+                        } else if (i == 3) {
+                            input = input + "U'#";
+                            nc.executeTurn("U");
+                        }
+                        input = input + "R#U'#R'#U'#F'#U#F#\n";
+                        break; // break if works
+                    } else {
+                        cube.turnU();
+                    }
+                }
+            }
+        }
+        if (input.equals("")) {
+            return null;
+        }
+        return input;
+    }
+
+    public void blockEdges(String[][] pos) {
+        int counter = 0;
+        for (int i = 0; i < block.length; i++) {
+            if (pos[i][1].equals("1;3")) { // orange
+                if (pos[i][0].equals("og")) {
+                    block[counter] = pos[i][1];
+                }
+            } else if (pos[i][1].equals("1;5")) {
+                if (pos[i][0].equals("ob")) {
+                    block[counter] = pos[i][1];
+                }
+            } else if (pos[i][1].equals("3;1")) { // green
+                if (pos[i][0].equals("go")) {
+                    block[counter] = pos[i][1];
+                }
+            } else if (pos[i][1].equals("5;1")) {
+                if (pos[i][0].equals("gr")) {
+                    block[counter] = pos[i][1];
+                }
+            } else if (pos[i][1].equals("3;7")) { // blue
+                if (pos[i][0].equals("bo")) {
+                    block[counter] = pos[i][1];
+                }
+            } else if (pos[i][1].equals("5;7")) {
+                if (pos[i][0].equals("br")) {
+                    block[counter] = pos[i][1];
+                }
+            } else if (pos[i][1].equals("7;3")) { // red
+                if (pos[i][0].equals("rg")) {
+                    block[counter] = pos[i][1];
+                }
+            } else if (pos[i][1].equals("7;5")) {
+                if (pos[i][0].equals("rb")) {
+                    block[counter] = pos[i][1];
+                }
+            }
+        }
+    }
+
+    public String[][] findEdges() {
+        char[][] array = cube.getLayout();
+        String[][] pos = new String[4][2];
+        int counter = 0;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                if (getEdgeCoordinates(i + ";" + j) != null) {
+                    if (array[i][j] != 'w' && array[i][j] != 'y') {
+                        String s = getEdgeCoordinates(i + ";" + j);
+                        int a = Integer.parseInt(s.substring(0, s.indexOf(";")));
+                        int b = Integer.parseInt(s.substring(s.indexOf(";") + 1));
+                        if (array[a][b] != 'w' && array[a][b] != 'y') {
+                            if (checkDuplicate(array[i][j] + "" + array[a][b], pos)) {
+                                pos[counter][0] = array[i][j] + "" + array[a][b];
+                                pos[counter][1] = i + ";" + j;
+                                counter++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return pos;
+    }
+
+    public boolean checkDuplicate(String colour, String[][] pos) {
+        for (int i = 0; i < pos.length; i++) {
+            if (pos[i][0] == null) {
+                continue;
+            }
+            if (colour.contains("" + pos[i][0].charAt(0)) && colour.contains("" + pos[i][0].charAt(1))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public char getNewSide(String colour, String order) {
         String ring = "ogrb";
         char n = 0;
         String a = null;
@@ -375,6 +602,15 @@ public class SolveF2L {
     public boolean isElementOfBlock(String iaj) {
         for (int i = 0; i < block.length; i++) {
             if (iaj.equals(block[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isElementOfBlockMid(String iaj) {
+        for (int i = 0; i < blockMid.length; i++) {
+            if (iaj.equals(blockMid[i])) {
                 return true;
             }
         }
@@ -584,5 +820,88 @@ public class SolveF2L {
             return null;
         }
         return pos;
+    }
+
+    public String getEdgeCoordinates(String iaj) { // finds the coordinates of the other tile of a middle block
+        // (between
+        // two corners)
+        String c = null;
+        switch (iaj) {
+            case "4;0": // green
+                c = "10;3";
+                break;
+            case "3;1":
+                c = "1;3";
+                break;
+            case "5;1":
+                c = "7;3";
+                break;
+            case "4;2":
+                c = "4;3";
+                break;
+            case "1;3": // orange
+                c = "3;1";
+                break;
+            case "0;4":
+                c = "11;4";
+                break;
+            case "1;5":
+                c = "3;7";
+                break;
+            case "2;4":
+                c = "3;4";
+                break;
+            case "4;3": // white
+                c = "4;2";
+                break;
+            case "3;4":
+                c = "2;4";
+                break;
+            case "4;5":
+                c = "4;6";
+                break;
+            case "5;4":
+                c = "6;4";
+                break;
+            case "4;6": // blue
+                c = "4;5";
+                break;
+            case "3;7":
+                c = "1;5";
+                break;
+            case "4;8":
+                c = "10;5";
+                break;
+            case "5;7":
+                c = "7;5";
+                break;
+            case "7;3": // red
+                c = "5;1";
+                break;
+            case "6;4":
+                c = "5;4";
+                break;
+            case "7;5":
+                c = "5;7";
+                break;
+            case "8;4":
+                c = "9;4";
+                break;
+            case "10;3": // yellow
+                c = "4;0";
+                break;
+            case "9;4":
+                c = "8;4";
+                break;
+            case "10;5":
+                c = "4;8";
+                break;
+            case "11;4":
+                c = "0;4";
+                break;
+            default:
+                break;
+        }
+        return c;
     }
 }
