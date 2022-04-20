@@ -12,14 +12,15 @@ public class App {
         cube = new Cube();
         nc = new NotationCompiler(cube);
         cr = new CrossSolver(cube, nc);
-        cs = new CubeSolver(cube, cr, nc);
         sf = new SolveF2L(cube, nc);
+        cs = new CubeSolver(cube, cr, nc, sf);
         this.list();
     }
 
     public void list() {
-        nc.executeString("L'#U'#L#U#L'#U2#L");
-        sf.solveF2L();
+        nc.executeString("M2#S2#E2");
+        cs.solveCube();
+        System.out.println(cube.checkCompletion());
     }
 
     public void test() {

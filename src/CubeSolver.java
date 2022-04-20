@@ -2,14 +2,16 @@ public class CubeSolver {
     private Cube cube;
     private NotationCompiler nc;
     private CrossSolver crossSolver;
+    private SolveF2L sf;
     private String[][] F2L;
     private String[][] PLL;
     private String[][] OLL;
 
-    public CubeSolver(Cube pCube, CrossSolver pCS, NotationCompiler pNC) {
+    public CubeSolver(Cube pCube, CrossSolver pCS, NotationCompiler pNC, SolveF2L Psf) {
         cube = pCube;
         crossSolver = pCS;
         nc = pNC;
+        sf = Psf;
         F2L = new String[164][2];
         PLL = new String[21][2];
         OLL = new String[57][2];
@@ -21,22 +23,85 @@ public class CubeSolver {
     public String solveCube() {
         String input = crossSolver.solveWhiteCross();
         System.out.println(input);
-        while (solveF2L()!=null) {
-            input = input + solveF2L();
-            System.out.println(input); //test
-            nc.executeString(solveF2L()); 
-            cube.printCubeLayout();   
-        }
+        input = input + sf.solveF2L();
+        System.out.println(input);
         input = input + "#" + solveOLL();
-        System.out.println(input); //test
+        System.out.println(solveOLL()); // test
         nc.executeString(solveOLL());
         input = input + "#" + solvePLL();
-        System.out.println(input); //test
+        System.out.println(solvePLL()); // test
         nc.executeString(solvePLL());
+        input = input + orientTop();
+        nc.executeString(orientTop());
         if (input.equals("")) {
             return null;
         }
         input = replaceInput(input);
+        return input;
+    }
+        public String orientTop() {
+            // String input = null;
+            String ring = "ogrb";
+            int counter = 0;
+            for (int i = 0; i < ring.length(); i++) {
+                if (cube.getColour(0, 4)==ring.charAt(0)) {
+                    counter = i;
+                    break;
+                }
+                ring = ring.substring(1) + ring.charAt(0);
+            }
+            if (counter==1) {
+                // input = "U#";
+                return "U#";
+            } else if (counter ==2) {
+                // input = "U2#";
+                return "U2#";
+            } else if (counter ==3) {
+                // input = "U'#";
+                return "U'#";
+            }
+            else{
+                return "";
+            }
+        }
+
+    public String solveF2Ls() { // this might not always work
+        String input = null;
+        for (int i = 0; i < F2L.length; i++) {
+            if (checkRequirments(F2L[i][0])) {
+                input = F2L[i][1];
+                break;
+            }
+        }
+        return input;
+    } 
+
+    public String solveF2L() {
+        String input = solveF2Ls();
+        int counter = 0;
+        if (input==null) {
+            for (int i = 0; i < 4; i++) {
+                cube.turnU();
+                input = solveF2Ls();
+                if (input!=null) {
+                    break;
+                }
+                counter = i;
+            }    
+        }
+        if (counter==1) {
+            input = "U#" + input;
+            nc.executeTurn("U'");
+        } else if (counter ==2) {
+            input = "U2#" + input;
+            nc.executeString("U2");
+        } else if (counter == 3) {
+            input = "U'#" + input;
+            nc.executeTurn("U");
+        }
+        if (input.contains("null")) {
+            return null;
+        }
         return input;
     }
 
@@ -50,15 +115,21 @@ public class CubeSolver {
         String c = getRing();
         String s = null;
         for (int i = 0; i < PLL.length; i++) {
-            s = compareRing(c, PLL[i][0]);
+            s = compareRingPLL(c, PLL[i][0]);
             if (s.charAt(0) == '1') {
-                if (Character.getNumericValue(s.charAt(2)) > 0) {
-                    input = "y2" + PLL[i][1];
-                } else if (Character.getNumericValue(s.charAt(2)) == 3) {
-                    input = "y'" + PLL[i][1];
+                if (s.charAt(2)=='1') {
+                    input = "y#" + PLL[i][1];
+                    return input;
+                } else if (s.charAt(2)=='2') {
+                    input = "y2#" + PLL[i][1];
+                    return input;
+                } else if (s.charAt(2)=='3') {
+                    input = "y'#" + PLL[i][1];
+                    return input;
+                } else {
+                    input = PLL[i][1];
+                    return input;
                 }
-            } else {
-                input = PLL[i][1];
             }
         }
         return input;
@@ -83,11 +154,11 @@ public class CubeSolver {
                 if (Character.getNumericValue(s.charAt(2)) > 0) { // this might not work, test
                                                                   // later!!!!!!!!!!!!!!!!< should work now
                     if (Character.getNumericValue(s.charAt(2)) == 1) {
-                        input = "y" + OLL[i][1];
+                        input = "y#" + OLL[i][1];
                     } else if (Character.getNumericValue(s.charAt(2)) == 2) {
-                        input = "y2" + OLL[i][1];
+                        input = "y2#" + OLL[i][1];
                     } else if (Character.getNumericValue(s.charAt(2)) == 3) {
-                        input = "y'" + OLL[i][1];
+                        input = "y'#" + OLL[i][1];
                     }
                 } else {
                     input = OLL[i][1];
@@ -99,7 +170,9 @@ public class CubeSolver {
 
     public String compareInnerRing(String pRing, String pRequirement) {
         for (int i = 0; i < pRing.length(); i = i + 2) {
-            if (generateRingOLL(pRing).equals(generateRingOLL(pRequirement))) {
+            String a = generateRingOLL(pRing);
+            String b = generateRingOLL(pRequirement);
+            if (a.equals(b)) {
                 return "1;" + i / 2;
             }
             pRing = pRing.substring(2) + pRing.substring(0, 2);
@@ -109,7 +182,9 @@ public class CubeSolver {
 
     public String compareRingOLL(String pRing, String pRequirement) {
         for (int i = 0; i < pRing.length(); i = i + 3) {
-            if (generateRingOLL(pRing).equals(generateRingOLL(pRequirement))) {
+            String a = generateRingOLL(pRing);
+            String b = generateRingOLL(pRequirement);
+            if (a.equals(b)) {
                 return "1;" + i / 3;
             }
             pRing = pRing.substring(3) + pRing.substring(0, 3);
@@ -117,9 +192,11 @@ public class CubeSolver {
         return "0";
     }
 
-    public String compareRing(String pRing, String pRequirement) {
+    public String compareRingPLL(String pRing, String pRequirement) {
         for (int i = 0; i < pRing.length(); i = i + 3) {
-            if (generateRingPLL(pRing).equals(generateRingPLL(pRequirement))) {
+            String a = generateRingPLL(pRing);
+            String b = generateRingPLL(pRequirement);
+            if (a.equals(b)) {
                 return "1;" + i / 3;
             }
             pRing = pRing.substring(3) + pRing.substring(0, 3);
@@ -127,10 +204,11 @@ public class CubeSolver {
         return "0";
     }
 
-    public String generateRingOLL(String pInput) { //turns the ring into a comparable ring for OLL
+    public String generateRingOLL(String pInput) { // turns the ring into a comparable ring for OLL
+        pInput = pInput.toLowerCase();
         pInput = pInput.replace('y', '1');
         for (int i = 0; i < pInput.length(); i++) {
-            if (pInput.charAt(i)!='y'){
+            if (pInput.charAt(i) != '1') {
                 pInput = pInput.replace(pInput.charAt(i), '2');
             }
         }
@@ -154,45 +232,35 @@ public class CubeSolver {
     public String getRing() { // returns the ring around the yellow face
         char[][] a = cube.getLayout();
         String ring = "";
-        ring = ring + a[0][3];// orange
+        ring = ring + a[0][4];// orange
         ring = ring + a[0][4];
-        ring = ring + a[0][5];
-        ring = ring + a[3][8];// blue
-        ring = ring + a[4][8];
-        ring = ring + a[5][8];
-        ring = ring + a[8][5];// red
-        ring = ring + a[8][4];
-        ring = ring + a[8][3];
-        ring = ring + a[5][0];// green
+        ring = ring + a[0][3];
+        ring = ring + a[3][0];// green
         ring = ring + a[4][0];
-        ring = ring + a[3][0];
+        ring = ring + a[5][0];
+        ring = ring + a[8][3];// red
+        ring = ring + a[8][4];
+        ring = ring + a[8][5];
+        ring = ring + a[5][8];// blue
+        ring = ring + a[4][8];
+        ring = ring + a[3][8];
         return ring;
     }
 
     public String getInnerRing() { // returns the ring on the yellow field, around the middle
         char[][] a = cube.getLayout();
         String ring = "";
-        ring = ring + a[9][3];
-        ring = ring + a[9][4];
-        ring = ring + a[9][5];
-        ring = ring + a[10][5];
         ring = ring + a[11][5];
         ring = ring + a[11][4];
         ring = ring + a[11][3];
         ring = ring + a[10][3];
+        ring = ring + a[9][3];
+        ring = ring + a[9][4];
+        ring = ring + a[9][5];
+        ring = ring + a[10][5];
         return ring;
     }
 
-    public String solveF2L() { //this might not alway work
-        String input = null;
-        for (int i = 0; i < F2L.length; i++) {
-            if (checkRequirments(F2L[i][0])) {
-                input = F2L[i][1];
-                break;
-            }
-        }
-        return input;
-    }
 
     public boolean checkRequirments(String pInput) {
         String[] split = pInput.split("&");
@@ -444,13 +512,13 @@ public class CubeSolver {
         OLL[20][1] = "R#U2#R'#U'#R#U#R'#U'#R#U'#R'";
         OLL[21][0] = "XXYXXXYXXYXY;XYXYXYXY";
         OLL[21][1] = "R#U2#R2#U'#R2#U'#R2#U2#R";
-        OLL[22][0] = "YXYXXXXXXXXX;XYXYYYYYX";
+        OLL[22][0] = "YXYXXXXXXXXX;XYXYYYYY";
         OLL[22][1] = "R2#D'#R#U2#R'#D#R#U2#R";
         OLL[23][0] = "XXXXXXXYXXX;XYYYXYYYX";
         OLL[23][1] = "r#U#R'#U'#r'#F#R#F'";
-        OLL[24][0] = "XXXXXXYXXXXY;XYYYXYYYX";
+        OLL[24][0] = "XXXXXXYXXXXY;XYYYXYYY";
         OLL[24][1] = "F'#r#U#R'#U'#r'#F#R";
-        OLL[25][0] = "XXXXXYXXYXXY;XYYYXYXYX";
+        OLL[25][0] = "XXXXXYXXYXXY;XYYYXYXY";
         OLL[25][1] = "R#U2#R'#U'#R#U'#R'";
         OLL[26][0] = "YXXYXXYXXXXX;XYXYXYYY";
         OLL[26][1] = "R#U#R'#U#R#U2#R'";

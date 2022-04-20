@@ -11,22 +11,53 @@ public class SolveF2L {
         blockMid = new String[4];
     }
 
-    public void solveF2L() {
+    public String solveF2Lddd() {
         String input = "";
         while (solveWhiteBottom() != null) {
-            System.out.println(solveWhiteBottom());
+            // System.out.println(solveWhiteBottom());
             input = input + solveWhiteBottom();
             nc.executeString(solveWhiteBottom());
         }
         while (solveWhiteTop() != null) {
-            System.out.println(solveWhiteTop());
+            // System.out.println(solveWhiteTop());
             input = input + solveWhiteTop();
             nc.executeString(solveWhiteTop());
         }
-        System.out.println("Full: " + input);
+        if (input.equals("")) {
+            return null;
+        }
+        return input;
     }
 
-    public String solveWhiteBottom() {
+    public String solveF2L() {
+        String input = "";
+        while (solveWhiteBottom() != null) {
+            input = input + solveWhiteBottom() + "\n";
+            nc.executeString(solveWhiteBottom());
+        }
+        System.out.println(input);
+        while (solveWhiteTop() != null) {
+            input = input + solveWhiteTop() + "\n";
+            nc.executeString(solveWhiteTop());
+        }
+        System.out.println(input);
+        while (solveSides() != null) {
+            input = input + solveSides() + "\n";
+            nc.executeString(solveSides());
+        }
+        System.out.println(input);
+        while (finishSides() != null) {
+            input = input + finishSides() + "\n";
+            nc.executeString(finishSides());
+        }
+        System.out.println(input);
+        if (input.equals("")) {
+            return null;
+        }
+        return input;
+    }
+
+    public String solveWhiteBottom() { // turns corners from the bottom to the top
         String input = null;
         String[][] pos = findWhiteBlock();
         String iaj = null;
@@ -89,7 +120,7 @@ public class SolveF2L {
         return null;
     }
 
-    public String solveWhiteTop() {
+    public String solveWhiteTop() { // slots in corners from the top in their spots
         String input = null;
         String[][] pos = findWhiteBlock();
         blockGood(pos);
@@ -187,7 +218,7 @@ public class SolveF2L {
         return null;
     }
 
-    public String solveSides() {
+    public String solveSides() { // moves sides that are not in the correct place to the top
         // check if they are in the correct place
         // if not move them up and
         // call F2L and rotate U until it solves
@@ -203,31 +234,31 @@ public class SolveF2L {
             if (s.contains("o") && s.contains("g")) {
                 for (int j = 0; j < 4; j++) {
                     if (cube.getColour(10, 5) == 'y' || cube.getColour(4, 8) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "L'#U#L#U#F#U'#F'#\n";
-                        break; // break if works
+                        input = input + "L'#U#L#U#F#U'#F'#";
+                        return input;
                     } else if (cube.getColour(9, 4) == 'y' || cube.getColour(8, 4) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "F#U'#F'#U'#L'#U#L#\n";
-                        break; // break if works
+                        input = input + "F#U'#F'#U'#L'#U#L#";
+                        return input;
                     } else {
                         cube.turnU();
                     }
@@ -235,31 +266,31 @@ public class SolveF2L {
             } else if (s.contains("r") && s.contains("g")) {
                 for (int j = 0; j < 4; j++) {
                     if (cube.getColour(11, 4) == 'y' || cube.getColour(0, 4) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "B'#U#B#U#L#U'#L'#\n";
-                        break; // break if works
+                        input = input + "B'#U#B#U#L#U'#L'#";
+                        return input;
                     } else if (cube.getColour(10, 5) == 'y' || cube.getColour(4, 8) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "L#U'#L'#U'#B'#U#B#\n";
-                        break; // break if works
+                        input = input + "L#U'#L'#U'#B'#U#B#";
+                        return input;
                     } else {
                         cube.turnU();
                     }
@@ -267,31 +298,31 @@ public class SolveF2L {
             } else if (s.contains("r") && s.contains("b")) {
                 for (int j = 0; j < 4; j++) {
                     if (cube.getColour(10, 3) == 'y' || cube.getColour(4, 0) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "B#U'#B'#U'#R'#U#R#\n";
-                        break; // break if works
+                        input = input + "R'#U#R#U#B#U'#B'#";
+                        return input;
                     } else if (cube.getColour(11, 4) == 'y' || cube.getColour(0, 4) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "R'#U#R#U#B#U'#B'#\n";
-                        break; // break if works
+                        input = input + "B#U'#B'#U'#R'#U#R#";
+                        return input;
                     } else {
                         cube.turnU();
                     }
@@ -299,31 +330,31 @@ public class SolveF2L {
             } else if (s.contains("o") && s.contains("b")) {
                 for (int j = 0; j < 4; j++) {
                     if (cube.getColour(8, 4) == 'y' || cube.getColour(9, 4) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "F'#U#F#U#R#U'#R'#\n";
-                        break; // break if works
+                        input = input + "F'#U#F#U#R#U'#R'#";
+                        return input;
                     } else if (cube.getColour(10, 3) == 'y' || cube.getColour(4, 0) == 'y') {
-                        if (i == 1) {
+                        if (j == 1) {
                             input = input + "U#";
                             nc.executeTurn("U'");
-                        } else if (i == 2) {
+                        } else if (j == 2) {
                             input = input + "U2#";
                             nc.executeTurn("U2");
-                        } else if (i == 3) {
+                        } else if (j == 3) {
                             input = input + "U'#";
                             nc.executeTurn("U");
                         }
-                        input = input + "R#U'#R'#U'#F'#U#F#\n";
-                        break; // break if works
+                        input = input + "R#U'#R'#U'#F'#U#F#";
+                        return input;
                     } else {
                         cube.turnU();
                     }
@@ -336,42 +367,157 @@ public class SolveF2L {
         return input;
     }
 
+    public String finishSides() { // slots the sides from the top in their spot 
+        // this doesnt care about the orientation rn
+        String[][] pos = findEdges();
+        blockEdges(pos);
+        String input = null;
+        for (int i = 0; i < pos.length; i++) {
+            if (isElementOfBlockMid(pos[i][1])) {
+                continue;
+            }
+            input = lineUpSide(pos[i][1], getSideTarget(pos[i][0]));
+            if (getSideTarget(pos[i][0]).equals("0;4")) {
+                if (pos[i][0].contains("g")) {
+                    input = input + "B'#U#B#U#L#U'#L'";
+                    return input;
+                } else if (pos[i][0].contains("b")) {
+                    input = input + "B#U'#B'#U'#R'#U#R";
+                    return input;
+                }
+            } else if (getSideTarget(pos[i][0]).equals("4;0")) {
+                if (pos[i][0].contains("r")) {
+                    input = input + "R'#U#R#U#B#U'#B'";
+                    return input;
+                } else if (pos[i][0].contains("o")) {
+                    input = input + "R#U'#R'#U'#F'#U#F";
+                    return input;
+                }
+            } else if (getSideTarget(pos[i][0]).equals("8;4")) {
+                if (pos[i][0].contains("g")) {
+                    input = input + "F#U'#F'#U'#L'#U#L";
+                    return input;
+                } else if (pos[i][0].contains("b")) {
+                    input = input + "F'#U#F#U#R#U'#R'";
+                    return input;
+                }
+            } else if (getSideTarget(pos[i][0]).equals("4;8")) {
+                if (pos[i][0].contains("o")) {
+                    input = input + "L'#U#L#U#F#U'#F'";
+                    return input;
+                } else if (pos[i][0].contains("r")) {
+                    input = input + "L#U'#L'#U'#B'#U#B";
+                    return input;
+                }
+            }
+        }
+        if (input == null ||input.equals("")) {
+            return null;
+        }
+        return input;
+    }
+
+    public String lineUpSide(String side, String target) {
+        String s = "0;4#4;0#8;4#4;8";
+        String[] ring = s.split("#");
+        for (int i = 0; i < ring.length; i++) {
+            if (ring[i].equals(side)) {
+                s = s.substring(s.indexOf(ring[i])) + "#" + s.substring(0, s.indexOf(ring[i]));
+                break;
+            }
+        }
+        int counter = 0;
+        ring = s.split("#");
+        for (int i = 0; i < ring.length; i++) {
+            if (ring[i].equals(target)) {
+                counter = i;
+                break;
+            }
+        }
+        if (counter == 1) {
+            return "U#";
+        } else if (counter == 2) {
+            return "U2#";
+        } else if (counter == 3) {
+            return "U'#";
+        }
+        return "";
+    }
+
+    public String getSideTarget(String colour) {
+        if (colour.contains("o") && colour.contains("g")) {
+            if (colour.charAt(0) == 'o') {
+                return "4;8";
+            } else if (colour.charAt(0) == 'g') {
+                return "8;4";
+            }
+        } else if (colour.contains("r") && colour.contains("g")) {
+            if (colour.charAt(0) == 'r') {
+                return "4;8";
+            } else if (colour.charAt(0) == 'g') {
+                return "0;4";
+            }
+        } else if (colour.contains("r") && colour.contains("b")) {
+            if (colour.charAt(0) == 'r') {
+                return "4;0";
+            } else if (colour.charAt(0) == 'b') {
+                return "0;4";
+            }
+        } else if (colour.contains("o") && colour.contains("b")) {
+            if (colour.charAt(0) == 'o') {
+                return "4;0";
+            } else if (colour.charAt(0) == 'b') {
+                return "8;4";
+            }
+        }
+        return null;
+    }
+
     public void blockEdges(String[][] pos) {
         int counter = 0;
         for (int i = 0; i < block.length; i++) {
             if (pos[i][1].equals("1;3")) { // orange
                 if (pos[i][0].equals("og")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             } else if (pos[i][1].equals("1;5")) {
                 if (pos[i][0].equals("ob")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             } else if (pos[i][1].equals("3;1")) { // green
                 if (pos[i][0].equals("go")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             } else if (pos[i][1].equals("5;1")) {
                 if (pos[i][0].equals("gr")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             } else if (pos[i][1].equals("3;7")) { // blue
                 if (pos[i][0].equals("bo")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             } else if (pos[i][1].equals("5;7")) {
                 if (pos[i][0].equals("br")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             } else if (pos[i][1].equals("7;3")) { // red
                 if (pos[i][0].equals("rg")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             } else if (pos[i][1].equals("7;5")) {
                 if (pos[i][0].equals("rb")) {
-                    block[counter] = pos[i][1];
+                    blockMid[counter] = pos[i][1];
+                    counter++;
                 }
             }
+            
         }
     }
 
