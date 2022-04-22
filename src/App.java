@@ -28,60 +28,6 @@ public class App {
         // test();
     }
 
-    public void test() {
-        boolean[] testing = new boolean[10];
-        for (int i = 0; i < testing.length; i++) {
-            String scramble = generateScramble();
-            System.out.println("Scramble : "+scramble);
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            nc.executeString(scramble);
-            System.out.println("Scramble: "+scramble);
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            // cs.solveCube();
-            try {
-                cs.solveCube();
-            } catch (Error e) {
-                System.out.println(scramble);
-                continue;
-            }
-            try {
-                TimeUnit.MILLISECONDS.sleep(200);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            testing[i] = cube.checkCompletion();
-            if (testing[i]==false) {
-                System.out.println("FALSE SCRAMBLE: " + scramble);
-                break;
-            }
-            try {
-                TimeUnit.MILLISECONDS.sleep(500);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        double a = 0;
-        for (int i = 0; i < testing.length; i++) {
-            System.out.println(i + ": " + testing[i]);
-            if (testing[i]==true) {
-                a++;
-            }
-        }
-        System.out.println((a/testing.length)*100 + "% success");
-    }
-
     public static void main(String[] args) throws Exception {
             for (int i = 0; i < 499; i++) {
             new App();

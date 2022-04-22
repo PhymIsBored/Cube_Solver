@@ -714,6 +714,7 @@ public class Cube {
             for (int j = 0; j < correct[i].length; j++) {
                 if (correct[i][j] != layout[i][j]) {
                     check = false;
+                    // throw new Error("not solved");
                     return check;
                 }
             }
