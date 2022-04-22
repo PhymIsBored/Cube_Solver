@@ -223,8 +223,11 @@ public class CrossSolver {
                         topSide = findTopSide(one / 3 + ";" + two / 3);
                         int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
                         int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
+                        edgeIAJ = getEdgeCoordinates(topSide);
+                        one = Integer.parseInt(edgeIAJ.substring(0,edgeIAJ.indexOf(";")));
+                        two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";")+1));
                         int x = 0;
-                        while (cube.getColour(a, b) == 'w') { // checks if the top is free, if not, turns it to be
+                        while (cube.getColour(a, b) == 'w' || cube.getColour(one, two)=='w') { // checks if the top is free, if not, turns it to be
                                                               // free
                             cube.turnU();
                             x++;
@@ -260,11 +263,12 @@ public class CrossSolver {
                         topSide = findBottomSide(one / 3 + ";" + two / 3);
                         int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
                         int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
+                        edgeIAJ = getEdgeCoordinates(topSide);
+                        one = Integer.parseInt(edgeIAJ.substring(0,edgeIAJ.indexOf(";")));
+                        two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";")+1));
                         int x = 0;
-                        while (cube.getColour(a, b) == 'w') { // checks if the bottom is free, if not, turns it to
-                                                              // be
-                                                              // free | do more checks for the other sides as well
-                                                              // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        while (cube.getColour(a, b) == 'w'||cube.getColour(one, two)=='w') { // checks if the bottom is free, if not, turns it to
+                                                              // be free 
                             cube.turnD();
                             x++;
                         }

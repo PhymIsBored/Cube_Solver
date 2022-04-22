@@ -361,34 +361,34 @@ public class SolveF2L {
             input = lineUpSide(pos[i][1], getSideTarget(pos[i][0]));
             if (getSideTarget(pos[i][0]).equals("0;4")) {
                 if (pos[i][0].contains("g")) {
-                    input = input + "B'#U#B#U#L#U'#L'";
+                    input = input + "B'#U#B#U#L#U'#L'#";
                     return input;
                 } else if (pos[i][0].contains("b")) {
-                    input = input + "B#U'#B'#U'#R'#U#R";
+                    input = input + "B#U'#B'#U'#R'#U#R#";
                     return input;
                 }
             } else if (getSideTarget(pos[i][0]).equals("4;0")) {
                 if (pos[i][0].contains("r")) {
-                    input = input + "R'#U#R#U#B#U'#B'";
+                    input = input + "R'#U#R#U#B#U'#B'#";
                     return input;
                 } else if (pos[i][0].contains("o")) {
-                    input = input + "R#U'#R'#U'#F'#U#F";
+                    input = input + "R#U'#R'#U'#F'#U#F#";
                     return input;
                 }
             } else if (getSideTarget(pos[i][0]).equals("8;4")) {
                 if (pos[i][0].contains("g")) {
-                    input = input + "F#U'#F'#U'#L'#U#L";
+                    input = input + "F#U'#F'#U'#L'#U#L#";
                     return input;
                 } else if (pos[i][0].contains("b")) {
-                    input = input + "F'#U#F#U#R#U'#R'";
+                    input = input + "F'#U#F#U#R#U'#R'#";
                     return input;
                 }
             } else if (getSideTarget(pos[i][0]).equals("4;8")) {
                 if (pos[i][0].contains("o")) {
-                    input = input + "L'#U#L#U#F#U'#F'";
+                    input = input + "L'#U#L#U#F#U'#F'#";
                     return input;
                 } else if (pos[i][0].contains("r")) {
-                    input = input + "L#U'#L'#U'#B'#U#B";
+                    input = input + "L#U'#L'#U'#B'#U#B#";
                     return input;
                 }
             }

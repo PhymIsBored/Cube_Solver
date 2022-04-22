@@ -287,8 +287,9 @@ public class NotationCompiler {
                 break;
             default:
                 System.out.println(pInput);
-                System.out.println("unknown");
-                throw new Error("unknown move");
+
+                // System.out.println("unknown");
+                throw new Error("unknown move: "+pInput);
                 // break;
         }
     }

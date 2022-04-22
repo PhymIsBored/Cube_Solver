@@ -1,5 +1,6 @@
 // import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class App {
     private Cube cube;
@@ -18,13 +19,13 @@ public class App {
     }
 
     public void list() {
-        // String scramble = generateScramble();
-        // scramble = "D#R#E#E#B#M#D#S#S#F#U#E#";
-        // System.out.println(scramble);
-        // nc.executeString(scramble);
-        // cs.solveCube();
-        // System.out.println(cube.checkCompletion());
-        test();
+        String scramble = generateScramble();
+        // scramble = "L'#R#D#R'#B#U2#R#L#B#L'#D2#";
+        System.out.println("Scramble: "+scramble);
+        nc.executeString(scramble);
+        cs.solveCube();
+        System.out.println(cube.checkCompletion());
+        // test();
     }
 
     public void test() {
@@ -32,12 +33,43 @@ public class App {
         for (int i = 0; i < testing.length; i++) {
             String scramble = generateScramble();
             System.out.println("Scramble : "+scramble);
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             nc.executeString(scramble);
-            cs.solveCube();
+            System.out.println("Scramble: "+scramble);
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // cs.solveCube();
+            try {
+                cs.solveCube();
+            } catch (Error e) {
+                System.out.println(scramble);
+                continue;
+            }
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             testing[i] = cube.checkCompletion();
             if (testing[i]==false) {
                 System.out.println("FALSE SCRAMBLE: " + scramble);
                 break;
+            }
+            try {
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
         double a = 0;
@@ -51,7 +83,15 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
-        new App();
+            for (int i = 0; i < 499; i++) {
+            new App();
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
     }
 
     public String generateScramble() {
