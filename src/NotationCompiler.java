@@ -180,6 +180,7 @@ public class NotationCompiler {
                 executeTurn("l");
                 executeTurn("l");
                 executeTurn("l");
+                break;
             case "u":
                 cube.turnU();
                 executeTurn("E'");
@@ -193,6 +194,7 @@ public class NotationCompiler {
                 executeTurn("u");
                 executeTurn("u");
                 executeTurn("u");
+                break;
             case "d":
                 cube.turnD();
                 executeTurn("E");
@@ -206,6 +208,7 @@ public class NotationCompiler {
                 executeTurn("d");
                 executeTurn("d");
                 executeTurn("d");
+                break;
             case "f":
                 cube.turnF();
                 executeTurn("S");
@@ -219,6 +222,7 @@ public class NotationCompiler {
                 executeTurn("f");
                 executeTurn("f");
                 executeTurn("f");
+                break;
             case "b":
                 cube.turnB();
                 executeTurn("S'");
@@ -232,6 +236,7 @@ public class NotationCompiler {
                 executeTurn("b");
                 executeTurn("b");
                 executeTurn("b");
+                break;
             // slice turns
             case "M":
                 cube.turnM();
@@ -283,7 +288,8 @@ public class NotationCompiler {
             default:
                 System.out.println(pInput);
                 System.out.println("unknown");
-                break;
+                throw new Error("unknown move");
+                // break;
         }
     }
 }

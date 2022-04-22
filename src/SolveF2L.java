@@ -11,32 +11,14 @@ public class SolveF2L {
         blockMid = new String[4];
     }
 
-    public String solveF2Lddd() {
-        String input = "";
-        while (solveWhiteBottom() != null) {
-            // System.out.println(solveWhiteBottom());
-            input = input + solveWhiteBottom();
-            nc.executeString(solveWhiteBottom());
-        }
-        while (solveWhiteTop() != null) {
-            // System.out.println(solveWhiteTop());
-            input = input + solveWhiteTop();
-            nc.executeString(solveWhiteTop());
-        }
-        if (input.equals("")) {
-            return null;
-        }
-        return input;
-    }
-
     public String solveF2L() {
         String input = "";
-        while (solveWhiteBottom() != null) {
+        while (solveWhiteBottom() != null) { //corners
             input = input + solveWhiteBottom() + "\n";
             nc.executeString(solveWhiteBottom());
         }
         System.out.println(input);
-        while (solveWhiteTop() != null) {
+        while (solveWhiteTop() != null) { //corners
             input = input + solveWhiteTop() + "\n";
             nc.executeString(solveWhiteTop());
         }
@@ -50,10 +32,10 @@ public class SolveF2L {
             input = input + finishSides() + "\n";
             nc.executeString(finishSides());
         }
-        System.out.println(input);
-        if (input.equals("")) {
-            return null;
-        }
+        // System.out.println(input);
+        // if (input.equals("")) {
+        //     return null;
+        // }
         return input;
     }
 
@@ -714,6 +696,7 @@ public class SolveF2L {
                 c = "";
                 break;
             default:
+                System.out.println(iaj); // debugging only,remove later
                 break;
         }
         return c;
@@ -945,7 +928,7 @@ public class SolveF2L {
             int[] array = { 5, 0, 9, 3 };
             pos = array;
         } else if (string.equals("8;5")) {
-            int[] array = { 5, 6, 9, 5 };
+            int[] array = { 5, 8, 9, 5 };
             pos = array;
         }
         // yellow
@@ -953,7 +936,7 @@ public class SolveF2L {
             int[] array = { 5, 0, 8, 3 };
             pos = array;
         } else if (string.equals("9;5")) {
-            int[] array = { 5, 6, 8, 5 };
+            int[] array = { 5, 8, 8, 5 };
             pos = array;
         } else if (string.equals("11;3")) {
             int[] array = { 0, 3, 3, 0 };

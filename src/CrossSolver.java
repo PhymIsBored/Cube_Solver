@@ -11,17 +11,17 @@ public class CrossSolver {
     }
 
     public String solveWhiteCross() {
-        String input = orientCube(); //orient cube executes the moves in the function
+        String input = orientCube() + "\n"; // orient cube executes the moves in the function
         while (solveWhiteBottom() != null) {
-            input = input + solveWhiteBottom();
+            input = input + solveWhiteBottom() + "\n";
             nc.executeString(solveWhiteBottom());
         }
         while (solveWhiteSide() != null) {
-            input = input + solveWhiteSide();
+            input = input + solveWhiteSide() + "\n";
             nc.executeString(solveWhiteSide());
         }
         while (solveWhiteTop() != null) {
-            input = input + solveWhiteTop();
+            input = input + solveWhiteTop() + "\n";
             nc.executeString(solveWhiteTop());
         }
         return input;
@@ -75,7 +75,8 @@ public class CrossSolver {
             if (Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";"))) / 3 == 3
                     && Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1)) / 3 == 1) { // are coordinates
                                                                                                      // in yellow
-                // char a = getSide(getEdgeCoordinates(pos[i][1]));  this was removed in lineUpEdgeBottom; remove later !!!!!!!!!!!!!!!!!!!
+                // char a = getSide(getEdgeCoordinates(pos[i][1])); this was removed in
+                // lineUpEdgeBottom; remove later !!!!!!!!!!!!!!!!!!!
                 char b = getSideColour(getEdgeCoordinates(pos[i][1]));
                 input = lineUpEdgeBottom(pos[i][0].charAt(1), b);
 
@@ -95,11 +96,12 @@ public class CrossSolver {
             if (Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";"))) / 3 == 1
                     && Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1)) / 3 == 1) { // are coordinates
                                                                                                      // in white
-                if (pos[i][0].charAt(1) == getSideColour(getEdgeCoordinates(pos[i][1]))) { // is already in the correct position?
+                if (pos[i][0].charAt(1) == getSideColour(getEdgeCoordinates(pos[i][1]))) { // is already in the correct
+                                                                                           // position?
                     turnBottom = false;
                     return null;
                 } else {
-                    if (turnBottom==true) {
+                    if (turnBottom == true) {
                         input = lineUpEdge(pos[i][0].charAt(1), getSideColour(getEdgeCoordinates(pos[i][1])));
                         if (input.equals("U#")) {
                             input = "D'#";
@@ -109,7 +111,7 @@ public class CrossSolver {
                             input = "D#";
                         }
                         turnBottom = false;
-                        return input; //change after testing
+                        return input; // change after testing
                     }
                     String c = getEdgeCoordinates(pos[i][1]);
                     int one = Integer.parseInt(c.substring(0, c.indexOf(";")));
@@ -161,141 +163,69 @@ public class CrossSolver {
             char sideColour = getSideColour(getEdgeCoordinates(pos[i][1]));
             String locationOfWhite = Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";"))) / 3 + ";"
                     + Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1)) / 3;
-            if (locationOfWhite.equals("1;1") || locationOfWhite.equals("3;1")) { // if if on white or yellow
-                // do nothing
-            } else {
-                if (pos[i][0].charAt(1) == sideColour) { // is on the correct side (colour based, not location) might be
-                                                         // broken
-                    String edgeIAJ = getEdgeCoordinates(pos[i][1]);
-                    int one = Integer.parseInt(edgeIAJ.substring(0, edgeIAJ.indexOf(";")));
-                    int two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";") + 1));
-                    String topSide = findTopSide(one / 3 + ";" + two / 3);
-                    int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
-                    int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
-                    int x = 0;
-                    while (cube.getColour(a, b) == 'w') { // checks if the top is free, if not, turns it to be
-                                                          // free
-                        cube.turnU();
-                        x++;
-                    }
-                    if (x == 0) {
-                        input = "";
-                    } else if (x == 1) {
-                        input = "U#";
-                        cube.turnU();
-                        cube.turnU();
-                        cube.turnU();
-                    } else if (x == 2) {
-                        input = "U2#";
-                        cube.turnU();
-                        cube.turnU();
-                    } else if (x == 3) {
-                        input = "U'#";
-                        cube.turnU();
-                    }
-                    if (pos[i][0].charAt(1) == 'o') { // which side to turn
-                        input = input + "F";
-                    } else if (pos[i][0].charAt(1) == 'g') {
-                        input = input + "L";
-                    } else if (pos[i][0].charAt(1) == 'r') {
-                        input = input + "B";
-                    } else if (pos[i][0].charAt(1) == 'b') {
-                        input = input + "R";
-                    }
-                    if (!turnDirectionTop(getEdgeCoordinates(pos[i][1])).equals("'")) { // which direction to turn
-                                                                                        // (normal or reverse)
-                        input = input + "'#";
-                    } else {
-                        input = input + "#";
-                    }
-                    return input;
+            if (locationOfWhite.equals("1;1") || locationOfWhite.equals("3;1")) { // if the edge is on the the white or
+                                                                                  // yellow side
+                continue;
+            }
+            if (pos[i][0].charAt(1) == sideColour) { // is it already on the correct side
+                String edgeIAJ = getEdgeCoordinates(pos[i][1]);
+                int one = Integer.parseInt(edgeIAJ.substring(0, edgeIAJ.indexOf(";")));
+                int two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";") + 1));
+                String topSide = findTopSide(one / 3 + ";" + two / 3);
+                int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
+                int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
+                int x = 0;
+                while (cube.getColour(a, b) == 'w') { // checks if the top is free, if not, turns it to be
+                                                      // free
+                    cube.turnU();
+                    x++;
+                }
+                if (x == 0) {
+                    input = "";
+                } else if (x == 1) {
+                    input = "U#";
+                    cube.turnU();
+                    cube.turnU();
+                    cube.turnU();
+                } else if (x == 2) {
+                    input = "U2#";
+                    cube.turnU();
+                    cube.turnU();
+                } else if (x == 3) {
+                    input = "U'#";
+                    cube.turnU();
+                }
+                if (pos[i][0].charAt(1) == 'o') { // which side to turn
+                    input = input + "F";
+                } else if (pos[i][0].charAt(1) == 'g') {
+                    input = input + "L";
+                } else if (pos[i][0].charAt(1) == 'r') {
+                    input = input + "B";
+                } else if (pos[i][0].charAt(1) == 'b') {
+                    input = input + "R";
+                }
+                if (!turnDirectionTop(getEdgeCoordinates(pos[i][1])).equals("'")) { // which direction to turn
+                                                                                    // (normal or reverse)
+                    input = input + "'#";
                 } else {
-                    String edgeIAJ = getEdgeCoordinates(pos[i][1]);
-                    int one = Integer.parseInt(edgeIAJ.substring(0, edgeIAJ.indexOf(";")));
-                    int two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";") + 1));
-                    String topSide = findTopSide(one / 3 + ";" + two / 3);
-                    if (topSide == null) { // if edge of block is yellow or white
-                        if (getSide(getEdgeCoordinates(pos[i][1])) == 'w') { // if it is the bottom side
-                            one = Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";")));
-                            two = Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1));
-                            topSide = findTopSide(one / 3 + ";" + two / 3);
-                            int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
-                            int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
-                            int x = 0;
-                            while (cube.getColour(a, b) == 'w') { // checks if the top is free, if not, turns it to be
-                                                                  // free
-                                cube.turnU();
-                                x++;
-                            }
-                            if (x == 0) {
-                                input = "";
-                            } else if (x == 1) {
-                                input = "U#";
-                                cube.turnU();
-                                cube.turnU();
-                                cube.turnU();
-                            } else if (x == 2) {
-                                input = "U2#";
-                                cube.turnU();
-                                cube.turnU();
-                            } else if (x == 3) {
-                                input = "U'#";
-                                cube.turnU();
-                            }
-                            char pSide = getSide(pos[i][1]); // turns it to the side
-                            if (pSide == 'o') {
-                                input = input + "F#";
-                            } else if (pSide == 'g') {
-                                input = input + "L#";
-                            } else if (pSide == 'r') {
-                                input = input + "B#";
-                            } else if (pSide == 'b') {
-                                input = input + "R#";
-                            }
-                        } else { // if it is the top side
-                            one = Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";")));
-                            two = Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1));
-                            topSide = findBottomSide(one / 3 + ";" + two / 3);
-                            int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
-                            int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
-                            int x = 0;
-                            while (cube.getColour(a, b) == 'w') { // checks if the bottom is free, if not, turns it to
-                                                                  // be
-                                                                  // free
-                                cube.turnB();
-                                x++;
-                            }
-                            if (x == 0) {
-                                input = "";
-                            } else if (x == 1) {
-                                input = "B#";
-                                cube.turnB();
-                                cube.turnB();
-                                cube.turnB();
-                            } else if (x == 2) {
-                                input = "B2#";
-                                cube.turnB();
-                                cube.turnB();
-                            } else if (x == 3) {
-                                input = "B'#";
-                                cube.turnB();
-                            }
-                            char pSide = getSide(pos[i][1]); // turns it to the side
-                            if (pSide == 'o') {
-                                input = input + "F#";
-                            } else if (pSide == 'g') {
-                                input = input + "L#";
-                            } else if (pSide == 'r') {
-                                input = input + "B#";
-                            } else if (pSide == 'b') {
-                                input = input + "R#";
-                            }
-                        }
-                    } else { // if its on the side (not on the top side)
+                    input = input + "#";
+                }
+                return input;
+            } else { // it is not yet on the correct side
+                String edgeIAJ = getEdgeCoordinates(pos[i][1]);
+                int one = Integer.parseInt(edgeIAJ.substring(0, edgeIAJ.indexOf(";")));
+                int two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";") + 1));
+                String topSide = findTopSide(one / 3 + ";" + two / 3);
+                if (topSide == null) { // if edge is at the top or bottom of the side
+                    if (getSide(getEdgeCoordinates(pos[i][1])) == 'w') { // if it is the bottom side
+                        one = Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";")));
+                        two = Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1));
+                        topSide = findTopSide(one / 3 + ";" + two / 3);
                         int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
                         int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
                         int x = 0;
-                        while (cube.getColour(a, b) == 'w') { // if top is white turn so it isnt
+                        while (cube.getColour(a, b) == 'w') { // checks if the top is free, if not, turns it to be
+                                                              // free
                             cube.turnU();
                             x++;
                         }
@@ -314,25 +244,137 @@ public class CrossSolver {
                             input = "U'#";
                             cube.turnU();
                         }
-                        // turn up
-                        char pSide = getSide(getEdgeCoordinates(pos[i][1]));
+                        char pSide = getSide(pos[i][1]); // turns it to the side
                         if (pSide == 'o') {
-                            input = input + "F";
+                            input = input + "F#";
                         } else if (pSide == 'g') {
-                            input = input + "L";
+                            input = input + "L#";
                         } else if (pSide == 'r') {
-                            input = input + "B";
+                            input = input + "B#";
                         } else if (pSide == 'b') {
-                            input = input + "R";
+                            input = input + "R#";
                         }
-                        input = input + turnDirectionTop(getEdgeCoordinates(pos[i][1])) + "#";
+                    } else { // if it is the top side
+                        one = Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";")));
+                        two = Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1));
+                        topSide = findBottomSide(one / 3 + ";" + two / 3);
+                        int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
+                        int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
+                        int x = 0;
+                        while (cube.getColour(a, b) == 'w') { // checks if the bottom is free, if not, turns it to
+                                                              // be
+                                                              // free | do more checks for the other sides as well
+                                                              // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            cube.turnD();
+                            x++;
+                        }
+                        if (x == 0) {
+                            input = "";
+                        } else if (x == 1) {
+                            input = "D#";
+                            cube.turnD();
+                            cube.turnD();
+                            cube.turnD();
+                        } else if (x == 2) {
+                            input = "D2#";
+                            cube.turnD();
+                            cube.turnD();
+                        } else if (x == 3) {
+                            input = "D'#";
+                            cube.turnD();
+                        }
+                        char pSide = getSide(pos[i][1]); // turns it to the side
+                        if (pSide == 'o') {
+                            input = input + "F#";
+                        } else if (pSide == 'g') {
+                            input = input + "L#";
+                        } else if (pSide == 'r') {
+                            input = input + "B#";
+                        } else if (pSide == 'b') {
+                            input = input + "R#";
+                        }
+                    }
+                } else { // if it's on the middle of a side
+                    int a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
+                    int b = Integer.parseInt(topSide.substring(topSide.indexOf(";") + 1));
+                    int x = 0;
+                    edgeIAJ = getEdgeCoordinates(a + ";" + b);
+                    one = Integer.parseInt(edgeIAJ.substring(0, edgeIAJ.indexOf(";")));
+                    two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";") + 1));
+                    while (cube.getColour(a, b) == 'w' || cube.getColour(one, two) == 'w') { // if top
+                                                                                             // is white
+                                                                                             // turn so
+                                                                                             // it isnt
+                        cube.turnU();
+                        x++;
+                    }
+                    if (x == 0) {
+                        input = "";
+                    } else if (x == 1) {
+                        input = "U#";
+                        cube.turnU();
+                        cube.turnU();
+                        cube.turnU();
+                    } else if (x == 2) {
+                        input = "U2#";
+                        cube.turnU();
+                        cube.turnU();
+                    } else if (x == 3) {
+                        input = "U'#";
+                        cube.turnU();
+                    }
+                    edgeIAJ = getEdgeCoordinates(pos[i][1]);
+                    a = Integer.parseInt(edgeIAJ.substring(0, edgeIAJ.indexOf(";")));
+                    b = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";")+1));
+                    topSide = findBottomSide(a / 3 + ";" + b / 3); // now bottom side
+                    a = Integer.parseInt(topSide.substring(0, topSide.indexOf(";")));
+                    b = Integer.parseInt(topSide.substring(topSide.indexOf(";")+1));
+                    edgeIAJ = getEdgeCoordinates(a + ";" + b);
+                    one = Integer.parseInt(edgeIAJ.substring(0, edgeIAJ.indexOf(";")));
+                    two = Integer.parseInt(edgeIAJ.substring(edgeIAJ.indexOf(";")+1));
+                    x = 0;
+                    while (cube.getColour(a, b) == 'w' || cube.getColour(one, two) == 'w') {
+                        cube.turnD();
+                        if (x > 3) {
+                            throw new Error("too many turns");
+                        }
+                        x++;
+                    }
+                    if (x == 1) {
+                        input = input + "D#";
+                        nc.executeTurn("D'");
+                    } else if (x == 2) {
+                        input = input + "D2#";
+                        nc.executeTurn("D2");
+                    } else if (x == 3) {
+                        input = input + "D'#";
+                        nc.executeTurn("D");
+                    }
+                    // turn up
+                    char pSide = getSide(getEdgeCoordinates(pos[i][1]));
+                    if (pSide == 'o') {
+                        input = input + "F";
+                    } else if (pSide == 'g') {
+                        input = input + "L";
+                    } else if (pSide == 'r') {
+                        input = input + "B";
+                    } else if (pSide == 'b') {
+                        input = input + "R";
+                    }
+                    input = input + turnDirectionTop(getEdgeCoordinates(pos[i][1])) + "#";
+                    if (x == 1) {
+                        input = input + "D'#";
+                    } else if (x == 2) {
+                        input = input + "D2#";
+                    } else if (x == 3) {
+                        input = input + "D#";
                     }
                 }
-                if (input.equals("null")) {
-                    return null;
-                }
-                return input;
             }
+            if (input.equals("null")) {
+                return null;
+            }
+            return input;
         }
         return input;
     }
@@ -408,7 +450,7 @@ public class CrossSolver {
         return input;
     }
 
-    public String lineUpEdgeBottom(char pColour, char pSideColour) { 
+    public String lineUpEdgeBottom(char pColour, char pSideColour) {
         String input = lineUpEdge(pColour, pSideColour); // solve this in go, not two
         if (pColour == 'o') {
             input = input + "F2#";

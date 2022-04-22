@@ -1,4 +1,4 @@
-import java.util.Scanner;
+// import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class App {
@@ -18,16 +18,36 @@ public class App {
     }
 
     public void list() {
-        nc.executeString("M2#S2#E2");
-        cs.solveCube();
-        System.out.println(cube.checkCompletion());
+        // String scramble = generateScramble();
+        // scramble = "D#R#E#E#B#M#D#S#S#F#U#E#";
+        // System.out.println(scramble);
+        // nc.executeString(scramble);
+        // cs.solveCube();
+        // System.out.println(cube.checkCompletion());
+        test();
     }
 
     public void test() {
-        String test = "1#2##3#4#";
-        test = test.replaceAll("##", "#");
-        String[] split = test.split("#");
-
+        boolean[] testing = new boolean[10];
+        for (int i = 0; i < testing.length; i++) {
+            String scramble = generateScramble();
+            System.out.println("Scramble : "+scramble);
+            nc.executeString(scramble);
+            cs.solveCube();
+            testing[i] = cube.checkCompletion();
+            if (testing[i]==false) {
+                System.out.println("FALSE SCRAMBLE: " + scramble);
+                break;
+            }
+        }
+        double a = 0;
+        for (int i = 0; i < testing.length; i++) {
+            System.out.println(i + ": " + testing[i]);
+            if (testing[i]==true) {
+                a++;
+            }
+        }
+        System.out.println((a/testing.length)*100 + "% success");
     }
 
     public static void main(String[] args) throws Exception {
@@ -66,33 +86,33 @@ public class App {
         }
     }
 
-    public void printF() {
-        String[] array = new String[164];
-        int start = 92;
-        int stop = 100;
-        for (int i = start; i < stop; i = i + 4) {
-            array[i] = ("F2L[" + i + "][0] = " + '"' + create() + '"' + ';' + "\n");
-            array[i] = array[i] + ("F2L[" + i + "][1] = " + '"' + r(i) + '"' + ';');
-        }
-        for (int i = start; i < stop; i++) {
-            System.out.println(array[i]);
-        }
-    }
+    // public void printF() {
+    //     String[] array = new String[164];
+    //     int start = 92;
+    //     int stop = 100;
+    //     for (int i = start; i < stop; i = i + 4) {
+    //         array[i] = ("F2L[" + i + "][0] = " + '"' + create() + '"' + ';' + "\n");
+    //         array[i] = array[i] + ("F2L[" + i + "][1] = " + '"' + r(i) + '"' + ';');
+    //     }
+    //     for (int i = start; i < stop; i++) {
+    //         System.out.println(array[i]);
+    //     }
+    // }
 
-    public String create() {
-        Scanner scanner = new Scanner(System.in);
-        String r = null;
-        System.out.println("Side:");
-        r = scanner.nextLine().toUpperCase() + ":";
-        System.out.println("Field:");
-        r = r + scanner.nextLine().toUpperCase() + "/";
-        System.out.println("Colour:");
-        r = r + scanner.nextLine().toLowerCase();
-        if (scanner.nextLine().equals("&")) {
-            r = r + "&" + create();
-        }
-        return r;
+    // public String create() {
+    //     Scanner scanner = new Scanner(System.in);
+    //     String r = null;
+    //     System.out.println("Side:");
+    //     r = scanner.nextLine().toUpperCase() + ":";
+    //     System.out.println("Field:");
+    //     r = r + scanner.nextLine().toUpperCase() + "/";
+    //     System.out.println("Colour:");
+    //     r = r + scanner.nextLine().toLowerCase();
+    //     if (scanner.nextLine().equals("&")) {
+    //         r = r + "&" + create();
+    //     }
+    //     return r;
 
-    }
+    // }
 
 }
