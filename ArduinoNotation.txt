@@ -1,0 +1,15 @@
+# Arduino Notation
+
+Alle Bewegungen werden aus der Sicht der Hand gesehen
+
+Table: 
+y is the same as Cube y
+y' 
+y2
+
+
+Hand (rename):
+x is the same as Cube x'
+
+o is open (lifting the hand)
+    o also does x
