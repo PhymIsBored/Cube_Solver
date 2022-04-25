@@ -714,10 +714,17 @@ public class Cube {
             for (int j = 0; j < correct[i].length; j++) {
                 if (correct[i][j] != layout[i][j]) {
                     check = false;
-                    // throw new Error("not solved");
                     return check;
                 }
             }
+        }
+        return check;
+    }
+
+    public boolean checkCompletionFinal() {
+        boolean check = checkCompletion();
+        if (check==false) {
+            throw new Error("not solved");
         }
         return check;
     }

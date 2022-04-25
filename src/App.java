@@ -20,24 +20,25 @@ public class App {
 
     public void list() {
         String scramble = generateScramble();
-        // scramble = "L'#R#D#R'#B#U2#R#L#B#L'#D2#";
+        scramble = "F#D#B#M#F#U#F#D#U#S#E#U#";
         System.out.println("Scramble: "+scramble);
         nc.executeString(scramble);
         cs.solveCube();
-        System.out.println(cube.checkCompletion());
+        System.out.println(cube.checkCompletionFinal());
         // test();
     }
 
     public static void main(String[] args) throws Exception {
-            for (int i = 0; i < 499; i++) {
-            new App();
-            try {
-                TimeUnit.MILLISECONDS.sleep(100);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+        //     for (int i = 0; i < 499; i++) {
+        //     new App();
+        //     try {
+        //         TimeUnit.MILLISECONDS.sleep(100);
+        //     } catch (InterruptedException e) {
+        //         // TODO Auto-generated catch block
+        //         e.printStackTrace();
+        //     }
+        // }
+        new App();
     }
 
     public String generateScramble() {
@@ -50,27 +51,27 @@ public class App {
         return scramble;
     }
 
-    public void printArray(String pInput, int pInt) {
-        for (int i = 0; i < pInt; i++) {
-            for (int j = 0; j < 2; j++) {
-                System.out.println(pInput + "[" + i + "][" + j + "] = " + '"' + '"' + ';');
-            }
-        }
-    }
+    // public void printArray(String pInput, int pInt) {
+    //     for (int i = 0; i < pInt; i++) {
+    //         for (int j = 0; j < 2; j++) {
+    //             System.out.println(pInput + "[" + i + "][" + j + "] = " + '"' + '"' + ';');
+    //         }
+    //     }
+    // }
 
-    public String r(int i) {
-        if (i % 4 == 0) {
-            return "y#";
-        } else if (i % 2 == 0) {
-            return "y'#";
-        } else if (((i - 1) % 4) == 0) {
-            return "y2#";
-        } else if (((i - 1) % 2) == 0) {
-            return "";
-        } else {
-            return null;
-        }
-    }
+    // public String r(int i) {
+    //     if (i % 4 == 0) {
+    //         return "y#";
+    //     } else if (i % 2 == 0) {
+    //         return "y'#";
+    //     } else if (((i - 1) % 4) == 0) {
+    //         return "y2#";
+    //     } else if (((i - 1) % 2) == 0) {
+    //         return "";
+    //     } else {
+    //         return null;
+    //     }
+    // }
 
     // public void printF() {
     //     String[] array = new String[164];

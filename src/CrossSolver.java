@@ -99,7 +99,8 @@ public class CrossSolver {
                 if (pos[i][0].charAt(1) == getSideColour(getEdgeCoordinates(pos[i][1]))) { // is already in the correct
                                                                                            // position?
                     turnBottom = false;
-                    return null;
+                    // return null; // why the heck did I write this, its so dumb
+                    continue;
                 } else {
                     if (turnBottom == true) {
                         input = lineUpEdge(pos[i][0].charAt(1), getSideColour(getEdgeCoordinates(pos[i][1])));
@@ -571,7 +572,7 @@ public class CrossSolver {
         }
         return c;
     }
-
+    
     public String getEdgeCoordinates(String iaj) { // finds the coordinates of the other tile of a middle block
                                                    // (between
                                                    // two corners)
