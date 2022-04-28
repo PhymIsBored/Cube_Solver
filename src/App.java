@@ -29,7 +29,7 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
-            for (int i = 0; i < 7999; i++) {
+            for (int i = 0; i < 499; i++) {
             new App();
             try {
                 TimeUnit.MILLISECONDS.sleep(100);
