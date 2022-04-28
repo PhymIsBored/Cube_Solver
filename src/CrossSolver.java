@@ -20,6 +20,10 @@ public class CrossSolver {
             input = input + solveWhiteSide() + "\n";
             nc.executeString(solveWhiteSide());
         }
+        while (solveWhiteBottom() != null) {
+            input = input + solveWhiteBottom() + "\n";
+            nc.executeString(solveWhiteBottom());
+        }
         while (solveWhiteTop() != null) {
             input = input + solveWhiteTop() + "\n";
             nc.executeString(solveWhiteTop());
@@ -164,7 +168,7 @@ public class CrossSolver {
             char sideColour = getSideColour(getEdgeCoordinates(pos[i][1]));
             String locationOfWhite = Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";"))) / 3 + ";"
                     + Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1)) / 3;
-            if (locationOfWhite.equals("1;1") || locationOfWhite.equals("3;1")) { // if the edge is on the the white or
+            if (locationOfWhite.equals("1;1") || locationOfWhite.equals("3;1")) { // if it is on the the white or
                                                                                   // yellow side
                 continue;
             }
@@ -297,6 +301,13 @@ public class CrossSolver {
                             input = input + "B#";
                         } else if (pSide == 'b') {
                             input = input + "R#";
+                        }
+                        if (x==1) {
+                            input = input + "D'#";
+                        } else if (x==2) {
+                            input = input + "D2";
+                        } else if (x==3) {
+                            input = input + "D";
                         }
                     }
                 } else { // if it's on the middle of a side

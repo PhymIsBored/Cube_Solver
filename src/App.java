@@ -20,7 +20,7 @@ public class App {
 
     public void list() {
         String scramble = generateScramble();
-        scramble = "F#D#B#M#F#U#F#D#U#S#E#U#";
+        // scramble = "L#B#B#L#S#F#F#E#F#F#M#U#";
         System.out.println("Scramble: "+scramble);
         nc.executeString(scramble);
         cs.solveCube();
@@ -29,16 +29,16 @@ public class App {
     }
 
     public static void main(String[] args) throws Exception {
-        //     for (int i = 0; i < 499; i++) {
-        //     new App();
-        //     try {
-        //         TimeUnit.MILLISECONDS.sleep(100);
-        //     } catch (InterruptedException e) {
-        //         // TODO Auto-generated catch block
-        //         e.printStackTrace();
-        //     }
-        // }
-        new App();
+            for (int i = 0; i < 7999; i++) {
+            new App();
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        // new App();
     }
 
     public String generateScramble() {
