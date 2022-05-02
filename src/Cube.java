@@ -702,6 +702,10 @@ public class Cube {
         }
     }
 
+    public void setCube() { // method to set the cube to a predetermined position
+        
+    }
+
     public boolean checkCompletion() {
         char[][] correct = new char[12][9];
         for (int i = 0; i < 12; i++) {
@@ -723,7 +727,7 @@ public class Cube {
 
     public boolean checkCompletionFinal() {
         boolean check = checkCompletion();
-        if (check==false) {
+        if (check == false) {
             throw new Error("not solved");
         }
         return check;

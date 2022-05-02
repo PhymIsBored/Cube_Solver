@@ -35,22 +35,18 @@ public class CrossSolver {
         String input = null;
         if (cube.getColour(1, 4) == 'y') {
             input = "x#";
-            nc.executeString(input);
         } else if (cube.getColour(4, 1) == 'y') {
             input = "z#";
-            nc.executeString(input);
         } else if (cube.getColour(4, 4) == 'y') {
             input = "x2#";
-            nc.executeString(input);
         } else if (cube.getColour(4, 7) == 'y') {
             input = "z'#";
-            nc.executeString(input);
         } else if (cube.getColour(7, 4) == 'y') {
             input = "x'#";
-            nc.executeString(input);
         } else if (cube.getColour(10, 4) == 'y') {
             input = "";
         }
+        nc.executeString(input);
         if (cube.getColour(1, 4) == 'o') {
             input = input + "";
         } else if (cube.getColour(4, 1) == 'o') {
@@ -103,7 +99,7 @@ public class CrossSolver {
                 if (pos[i][0].charAt(1) == getSideColour(getEdgeCoordinates(pos[i][1]))) { // is already in the correct
                                                                                            // position?
                     turnBottom = false;
-                    // return null; // why the heck did I write this, its so dumb
+                    // return null; // why the heck did I write this, this is so dumb
                     continue;
                 } else {
                     if (turnBottom == true) {

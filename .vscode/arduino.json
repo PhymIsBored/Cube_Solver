@@ -1,5 +1,7 @@
 {
     "board": "arduino:avr:uno",
     "programmer": "arduino:avrisp",
-    "sketch": "MotorTest\\MotorTestCode\\MotorTestCode.ino"
+    "sketch": "MotorTest\\test\\test.ino",
+    "port": "COM5",
+    "output": "D:\\Cube_Solver\\MotorTest\\ArduinoOutput"
 }

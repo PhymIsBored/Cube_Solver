@@ -285,6 +285,9 @@ public class NotationCompiler {
                 cube.turnS();
                 // System.out.println("S2");
                 break;
+            case "":
+                // this case is here to prevent errors
+                break;
             default:
                 System.out.println(pInput);
 

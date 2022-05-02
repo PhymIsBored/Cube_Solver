@@ -20,7 +20,7 @@ public class App {
 
     public void list() {
         String scramble = generateScramble();
-        // scramble = "L#B#B#L#S#F#F#E#F#F#M#U#";
+        // // scramble = "L#B#B#L#S#F#F#E#F#F#M#U#";
         System.out.println("Scramble: "+scramble);
         nc.executeString(scramble);
         cs.solveCube();
