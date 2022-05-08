@@ -75,8 +75,6 @@ public class CrossSolver {
             if (Integer.parseInt(pos[i][1].substring(0, pos[i][1].indexOf(";"))) / 3 == 3
                     && Integer.parseInt(pos[i][1].substring(pos[i][1].indexOf(";") + 1)) / 3 == 1) { // are coordinates
                                                                                                      // in yellow
-                // char a = getSide(getEdgeCoordinates(pos[i][1])); this was removed in
-                // lineUpEdgeBottom; remove later !!!!!!!!!!!!!!!!!!!
                 char b = getSideColour(getEdgeCoordinates(pos[i][1]));
                 input = lineUpEdgeBottom(pos[i][0].charAt(1), b);
 
@@ -463,7 +461,7 @@ public class CrossSolver {
     }
 
     public String lineUpEdgeBottom(char pColour, char pSideColour) {
-        String input = lineUpEdge(pColour, pSideColour); // solve this in go, not two
+        String input = lineUpEdge(pColour, pSideColour); // solve this in one go, not two
         if (pColour == 'o') {
             input = input + "F2#";
         } else if (pColour == 'g') {

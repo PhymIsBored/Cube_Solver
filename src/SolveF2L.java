@@ -202,8 +202,6 @@ public class SolveF2L {
 
     public String solveSides() { // moves sides that are not in the correct place to the top
         // check if they are in the correct place
-        // if not move them up and
-        // call F2L and rotate U until it solves
         String[][] pos = findEdges();
         blockEdges(pos);
         String input = "";
