@@ -10,9 +10,3 @@ y2
 
 Hand (rename):
 x is the same as Cube x'
-
-o is open (lifting the hand)
-    o also does x
-
-o' is close (lowering the hand)
-    - this might add another move, test!!!!!!!!!!!!!!!!!!

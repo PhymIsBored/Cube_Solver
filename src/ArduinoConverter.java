@@ -1,15 +1,79 @@
+import java.util.ArrayList;
+
 public class ArduinoConverter {
     private Cube cube;
-    private char down;
+    private char bottom;
+    private String ring;
     private boolean handUp;
 
     public ArduinoConverter(Cube pCube) {
         cube = pCube;
-        down = 'd';
+        ring = "obrg";
+        bottom = 'w'; //default position, white is bottom
         handUp = true;
     }
 
-    public void returnSide(String pInput) {
+    public void testSplit() {
+        String moves = "M#";
+        String[] split = moves.split("#");
+        String opt = "";
+        for (String string : split) {
+            opt = opt + breakDown(string);
+        }
+        split = opt.split("#");
+        optimiseRotations(split);
+    }
+
+    public void rotateToSide(String target) { // turns the side needed to perform the turn to the bottom
+        
+    }
+
+    public String rotateRing(char target) {
+        if (target==ring.charAt(0)) {
+            return "";
+        }
+        String turns = "";
+        for (int i = 0; i < 4; i++) {
+            System.out.println(ring);
+            ring = ring.substring(1) + ring.charAt(0);
+            turns = turns + "#y#";
+        }
+        return turns;
+    }
+
+    //optimise String func
+
+    public String[][] optimiseRotations(String[] pInput) { //make two separate Strings with turn and number
+        String previous = pInput[1];
+        String optRot = "";
+        String optNum = "";
+        int counter = 0;
+        int slot = 0;
+        for (String string : pInput) {
+            if (string.equals(previous)) {
+                counter++;
+            } else {
+                optRot = optRot + "#" + previous;
+                optNum = optNum + "#" + counter;
+                previous = string;
+                counter = 1;
+                // slot++;
+            }
+        }
+        optRot = optRot + "#" + previous;
+        optNum = optNum + "#" + counter;
+        String[] splitRot = optRot.split("#");
+        String[] splitNum = optNum.split("#");
+        String[][] optimised = new String[splitRot.length-1][2];
+        for (int i = 1; i < splitNum.length; i++) {
+           optimised[i-1][0] = splitRot[i];
+           optimised[i-1][1] = splitNum[i]; 
+        }
+        return optimised;
+    }
+
+    public void returnSide(String pInput) { // returns what side of the cube must be facing down to perform the turn
+                                            // not functional
         switch (pInput.charAt(0)) {
             case 'R':
 
