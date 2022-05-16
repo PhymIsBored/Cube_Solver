@@ -1,6 +1,6 @@
 // import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+// import java.util.concurrent.TimeUnit;
 
 public class App {
     private Cube cube;
@@ -28,9 +28,7 @@ public class App {
         // cs.solveCube();
         // System.out.println(cube.checkCompletionFinal());
         // test();
-        System.out.println(ac.rotateToSide('b'));
-        System.out.println(ac.rotateToSide('y'));
-        System.out.println(ac.rotateToSide('r'));
+        ac.testSplit();;
     }
 
     public static void main(String[] args) throws Exception {

@@ -17,9 +17,28 @@ public class ArduinoConverter {
         String[][] optimised = optimiseRotations(split);
         String turns = "";
         for (int i = 0; i < optimised.length; i++) {
-            turns = turns + rotateToSide(returnSide(optimised[i][0]));
+            turns = turns + rotateToSide(returnSide(optimised[i][0])) + optimised[i][0]; // figure out how to use the
+                                                                                         // moves
+            cubeRotationsEffectImplementation(optimised[i][1]);
         }
-        System.out.println(turns);
+    }
+
+    public void cubeRotationsEffectImplementation(String pInput) { // name tentative; when cube rotations are done, the
+                                                                   // position of the cube changes, but the code doesnt
+                                                                   // reflect that
+        switch (pInput) {
+            case "1":
+                ring = ring.substring(1) + ring.charAt(0);
+                break;
+            case "2":
+                ring = ring.substring(2) + ring.substring(0, 2);
+                break;
+            case "3":
+                ring = ring.charAt(3) + ring.substring(0, 3);
+                break;
+            default:
+                break;
+        }
     }
 
     public String[] makeIntoSideRotations(String moves) {
@@ -27,7 +46,7 @@ public class ArduinoConverter {
         String opt = "";
         for (String string : split) {
             opt = opt + breakDown(string);
-        } 
+        }
         split = opt.split("#");
         return split;
     }
@@ -35,7 +54,7 @@ public class ArduinoConverter {
     public String rotateToSide(char target) { // turns the side needed to perform the turn to the bottom
         String turns = null;
         String output = "";
-        if (bottom!=target) {
+        if (bottom != target) {
             do {
                 turns = rotateRing(target);
                 if (turns == null) {
@@ -45,10 +64,10 @@ public class ArduinoConverter {
             } while (turns == null);
             turns = output + turns;
             // move the face to the bottom
-            makeX();
+            makeX(); // this func still uses arduino notation, it has to, implement this differently!!!!
             turns = turns + "x'#";
         }
-        if (turns==null) {
+        if (turns == null) {
             return "";
         }
         return turns;
