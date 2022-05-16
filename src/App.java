@@ -28,7 +28,9 @@ public class App {
         // cs.solveCube();
         // System.out.println(cube.checkCompletionFinal());
         // test();
-        ac.rotateRing();
+        System.out.println(ac.rotateToSide('b'));
+        System.out.println(ac.rotateToSide('y'));
+        System.out.println(ac.rotateToSide('r'));
     }
 
     public static void main(String[] args) throws Exception {

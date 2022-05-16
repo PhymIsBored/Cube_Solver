@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class ArduinoConverter {
     private Cube cube;
     private char bottom;
@@ -8,47 +6,109 @@ public class ArduinoConverter {
 
     public ArduinoConverter(Cube pCube) {
         cube = pCube;
-        ring = "obrg";
-        bottom = 'w'; //default position, white is bottom
+        ring = "obrg"; // replace these with the actual position
+        bottom = 'w'; // default position, white is bottom
         handUp = true;
     }
 
     public void testSplit() {
         String moves = "M#";
+        String[] split = makeIntoSideRotations(moves);
+        String[][] optimised = optimiseRotations(split);
+        String turns = "";
+        for (int i = 0; i < optimised.length; i++) {
+            turns = turns + rotateToSide(returnSide(optimised[i][0]));
+        }
+        System.out.println(turns);
+    }
+
+    public String[] makeIntoSideRotations(String moves) {
         String[] split = moves.split("#");
         String opt = "";
         for (String string : split) {
             opt = opt + breakDown(string);
-        }
+        } 
         split = opt.split("#");
-        optimiseRotations(split);
+        return split;
     }
 
-    public void rotateToSide(String target) { // turns the side needed to perform the turn to the bottom
-        
-    }
-
-    public String rotateRing(char target) {
-        if (target==ring.charAt(0)) {
-            return "";
+    public String rotateToSide(char target) { // turns the side needed to perform the turn to the bottom
+        String turns = null;
+        String output = "";
+        if (bottom!=target) {
+            do {
+                turns = rotateRing(target);
+                if (turns == null) {
+                    makeX();
+                    output = output + "x'#";
+                }
+            } while (turns == null);
+            turns = output + turns;
+            // move the face to the bottom
+            makeX();
+            turns = turns + "x'#";
         }
-        String turns = "";
-        for (int i = 0; i < 4; i++) {
-            System.out.println(ring);
-            ring = ring.substring(1) + ring.charAt(0);
-            turns = turns + "#y#";
+        if (turns==null) {
+            return "";
         }
         return turns;
     }
 
-    //optimise String func
+    public void makeX() { // rename this
+        char beforeBottom = bottom;
+        bottom = ring.charAt(0);
+        ring = "" + getOppositeSide(beforeBottom) + ring.charAt(1) + beforeBottom + ring.charAt(3);
+    }
 
-    public String[][] optimiseRotations(String[] pInput) { //make two separate Strings with turn and number
+    public char getOppositeSide(char input) {
+        switch (input) {
+            case 'w':
+                return 'y';
+            case 'y':
+                return 'w';
+            case 'o':
+                return 'r';
+            case 'r':
+                return 'o';
+            case 'g':
+                return 'b';
+            case 'b':
+                return 'g';
+            default:
+                System.out.println("Error: opposite Side not found");
+                break;
+        }
+        return 0;
+    }
+
+    public String rotateRing(char target) {
+        if (target == ring.charAt(0)) {
+            return "";
+        }
+        String turns = "";
+        for (int i = 0; i < 4; i++) {
+            if (ring.charAt(0) == target) {
+                return turns;
+            }
+            ring = ring.substring(1) + ring.charAt(0);
+            turns = turns + "y#";
+        }
+        return null;
+    }
+
+    public String replaceInput(String input) { // # should not be the first char in a string
+        input = input.replaceAll("##", "#");
+        if (input.charAt(0) == '#') {
+            input = input.substring(1);
+        }
+        return input;
+    }
+
+    public String[][] optimiseRotations(String[] pInput) { // make two separate Strings with turn and number
         String previous = pInput[1];
         String optRot = "";
         String optNum = "";
         int counter = 0;
-        int slot = 0;
         for (String string : pInput) {
             if (string.equals(previous)) {
                 counter++;
@@ -64,39 +124,49 @@ public class ArduinoConverter {
         optNum = optNum + "#" + counter;
         String[] splitRot = optRot.split("#");
         String[] splitNum = optNum.split("#");
-        String[][] optimised = new String[splitRot.length-1][2];
+        String[][] optimised = new String[splitRot.length - 1][2];
         for (int i = 1; i < splitNum.length; i++) {
-           optimised[i-1][0] = splitRot[i];
-           optimised[i-1][1] = splitNum[i]; 
+            optimised[i - 1][0] = splitRot[i];
+            optimised[i - 1][1] = splitNum[i];
         }
         return optimised;
     }
 
-    public void returnSide(String pInput) { // returns what side of the cube must be facing down to perform the turn
+    public char returnSide(String pInput) { // returns what side of the cube must be facing down to perform the turn
                                             // not functional
+        char ret = 0;
         switch (pInput.charAt(0)) {
             case 'R':
-
+                ret = 'b';
                 break;
             case 'L':
-
+                ret = 'g';
                 break;
             case 'U':
-
+                ret = 'y';
                 break;
             case 'D':
-
+                ret = 'w';
                 break;
             case 'F':
-
+                ret = 'o';
                 break;
             case 'B':
-
+                ret = 'r';
                 break;
-
+            case 'x':
+                ret = 'b';
+                break;
+            case 'y':
+                ret = 'w';
+                break;
+            case 'z':
+                ret = 'o';
+                break;
             default:
                 break;
         }
+        return ret;
     }
 
     public String breakDown(String pInput) { // breaks the notation down to the side rotations necessary to perform the
@@ -106,106 +176,81 @@ public class ArduinoConverter {
             case "x":
                 return "x#";
             // System.out.println("x");
-
             case "y":
                 return "y#";
             // System.out.println("y");
-
             case "z":
                 return "z#";
             // System.out.println("z");
-
             case "x2":
                 return "x#x#";
             // System.out.println("x2");
-
             case "y2":
                 return "y#y#";
             // System.out.println("y2");
-
             case "z2":
                 return "z#z#";
             // System.out.println("z2");
-
             case "x'":
                 return "x#x#x#";
             // System.out.println("x'");
-
             case "y'":
                 return "y#y#y#";
             // System.out.println("y'");
-
             case "z'":
                 return "z#z#z#";
             // System.out.println("z'");
-
             // default turns
             case "R":
                 return "R#";
             // System.out.println("R");
-
             case "L":
                 return "L#";
             // System.out.println("L");
-
             case "U":
                 return "U#";
             // System.out.println("U");
-
             case "D":
                 return "D#";
             // System.out.println("D");
-
             case "F":
                 return "F#";
             // System.out.println("F");
-
             case "B":
                 return "B#";
             // System.out.println("B");
-
             // reverse turns
             case "R'":
                 return "R#R#R#";
             // System.out.println("R'");
-
             case "L'":
                 return "L#L#L#";
             // System.out.println("L'");
-
             case "U'":
                 return "U#U#U#";
             // System.out.println("U'");
-
             case "D'":
                 return "D#D#D#";
             // System.out.println("D'");
-
             case "F'":
                 return "F#F#F#";
             // System.out.println("F'");
-
             case "B'":
                 return "B#B#B#";
             // System.out.println("B'");
-
             // double turns
             case "R2":
                 return "R#R#";
             // System.out.println("R2");
-
             case "L2":
                 return "L#L#";
             // System.out.println("L2");
-
             case "U2":
                 return "U#U#";
             // System.out.println("U2");
-
             case "D2":
                 return "D#D#";
             // System.out.println("D2");
-
             case "F2":
                 return "F#F#";
             // System.out.println("F2");
