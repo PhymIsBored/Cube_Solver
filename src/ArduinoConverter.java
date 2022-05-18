@@ -11,33 +11,42 @@ public class ArduinoConverter {
         handUp = true;
     }
 
-    public void testSplit() {
-        String moves = "M#";
+    public void testSplit() {  // the hand needs to be opened and closed depending on what move is being executed
+        String moves = "M#E";
         String[] split = makeIntoSideRotations(moves);
         String[][] optimised = optimiseRotations(split);
         String turns = "";
         for (int i = 0; i < optimised.length; i++) {
-            turns = turns + rotateToSide(returnSide(optimised[i][0])) + optimised[i][0]; // figure out how to use the
-                                                                                         // moves
-            cubeRotationsEffectImplementation(optimised[i][1]);
+            turns = turns + rotateToSide(returnSide(optimised[i][0])) + getArduinoMove(optimised[i][0], optimised[i][1]) + "#";
+            cubeRotationsEffectImplementation(optimised[i][0],optimised[i][1]);
         }
     }
 
-    public void cubeRotationsEffectImplementation(String pInput) { // name tentative; when cube rotations are done, the
+    public int getArduinoMove(String rotation, String number) {
+        if (rotation.equals("x")||rotation.equals("y")||rotation.equals("z")) {
+            return Integer.parseInt(number) + 3;
+        } else {
+            return Integer.parseInt(number);
+        }
+    }
+
+    public void cubeRotationsEffectImplementation(String turntype,String pTurns) { // name tentative; when cube rotations are done, the
                                                                    // position of the cube changes, but the code doesnt
                                                                    // reflect that
-        switch (pInput) {
-            case "1":
-                ring = ring.substring(1) + ring.charAt(0);
-                break;
-            case "2":
-                ring = ring.substring(2) + ring.substring(0, 2);
-                break;
-            case "3":
-                ring = ring.charAt(3) + ring.substring(0, 3);
-                break;
-            default:
-                break;
+        if (turntype.equals("x")||turntype.equals("y")||turntype.equals("z")) { //this is only done if the rotation is a cube rotation
+            switch (pTurns) {
+                case "1":
+                    ring = ring.substring(1) + ring.charAt(0);
+                    break;
+                case "2":
+                    ring = ring.substring(2) + ring.substring(0, 2);
+                    break;
+                case "3":
+                    ring = ring.charAt(3) + ring.substring(0, 3);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -59,13 +68,14 @@ public class ArduinoConverter {
                 turns = rotateRing(target);
                 if (turns == null) {
                     makeX();
-                    output = output + "x'#";
+                    output = output + "7#";
                 }
             } while (turns == null);
             turns = output + turns;
             // move the face to the bottom
-            makeX(); // this func still uses arduino notation, it has to, implement this differently!!!!
-            turns = turns + "x'#";
+            makeX(); // this func still uses arduino notation, it has to, implement this
+                     // differently!!!!
+            turns = turns + "7#";
         }
         if (turns == null) {
             return "";
@@ -104,13 +114,16 @@ public class ArduinoConverter {
         if (target == ring.charAt(0)) {
             return "";
         }
-        String turns = "";
+        int turns = 0;
         for (int i = 0; i < 4; i++) {
             if (ring.charAt(0) == target) {
-                return turns;
+                if (turns == 0) {
+                    return Integer.toString(turns) + "#";
+                }
+                return Integer.toString(turns + 3) + "#";
             }
             ring = ring.substring(1) + ring.charAt(0);
-            turns = turns + "y#";
+            turns++;
         }
         return null;
     }
@@ -124,7 +137,7 @@ public class ArduinoConverter {
     }
 
     public String[][] optimiseRotations(String[] pInput) { // make two separate Strings with turn and number
-        String previous = pInput[1];
+        String previous = pInput[0]; // shouldnt this be 0
         String optRot = "";
         String optNum = "";
         int counter = 0;
@@ -174,13 +187,13 @@ public class ArduinoConverter {
                 ret = 'r';
                 break;
             case 'x':
-                ret = 'b';
+                ret = 'g';
                 break;
             case 'y':
                 ret = 'w';
                 break;
             case 'z':
-                ret = 'o';
+                ret = 'r';
                 break;
             default:
                 break;
@@ -340,11 +353,11 @@ public class ArduinoConverter {
 
             // slice turns
             case "M":
-                return "x#x#x#R#L#L#L#";
+                return "R#L#L#L#";
             // System.out.println("M");
 
             case "E":
-                return "y#y#y#F#D#D#D#";
+                return "F#D#D#D#";
             // System.out.println("E");
 
             case "S":
