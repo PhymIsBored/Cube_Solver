@@ -202,7 +202,10 @@ public class ArduinoConverter {
     }
 
     public String breakDown(String pInput) { // breaks the notation down to the side rotations necessary to perform the
-                                             // turn
+                                             // turn 
+
+
+                                             // this thing is broken rn, fix this!!!!
         switch (pInput) {
             // cube rotations
             case "x":
@@ -339,7 +342,7 @@ public class ArduinoConverter {
                 return "z#z#B#B#";
 
             case "f'":
-                return "z#z#z#D#D#D#";
+                return "z#z#z#B#B#B#";
 
             case "b":
                 return "z#z#z#F#";
@@ -353,15 +356,15 @@ public class ArduinoConverter {
 
             // slice turns
             case "M":
-                return "R#L#L#L#";
+                return "x#x#x#R#L#L#L#";
             // System.out.println("M");
 
             case "E":
-                return "F#D#D#D#";
+                return "y#y#y#U#D#D#D#";
             // System.out.println("E");
 
             case "S":
-                return "z#F#F#F#D#";
+                return "z#F#F#F#B#";
             // System.out.println("S");
 
             // reverse slice turns
