@@ -804,6 +804,10 @@ public class Cube {
         }
     }
 
+    public void setCubePosition(char[][] pLayout) {
+        layout = pLayout;
+    }
+
     private char[][] makeCopy() { /*
                                    * returns a copy of the current layout of the cube, since Object.clone would
                                    * return a reference...

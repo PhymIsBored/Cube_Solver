@@ -1,4 +1,5 @@
 // import java.util.Scanner;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 // import java.util.concurrent.TimeUnit;
 
@@ -28,7 +29,9 @@ public class App {
         // cs.solveCube();
         // System.out.println(cube.checkCompletionFinal());
         // test();
-        ac.testSplit();;
+        this.inputCubePosition();
+        cs.solveCube();
+        System.out.println(cube.checkCompletion());
     }
 
     public static void main(String[] args) throws Exception {
@@ -42,6 +45,47 @@ public class App {
         //     }
         // }
         new App();
+    }
+
+    public void inputCubePosition() {
+        Scanner scanner = new Scanner(System.in);
+        char[][] layout = new char[12][9];
+        //method fill faces orange; green, white, blue; red; yellow;#
+        //fill orange
+        for (int i = 0; i < 3; i++) {
+            System.out.println("input orange:");
+            String test = "aaa"+ scanner.nextLine() + "aaa";
+            System.out.println(test);
+            char[] d = test.toCharArray();
+            layout[i] = d;
+        }
+        // fill green, white, blue
+        for (int i = 3; i < 6; i++) {
+            System.out.println("input green, white, blue:");
+            String test = scanner.nextLine();
+            System.out.println(test);
+            char[] d = test.toCharArray();
+            layout[i] = d;
+        }
+        // fill red
+        for (int i = 6; i < 9; i++) {
+            System.out.println("input red:");
+            String test = "aaa"+ scanner.nextLine() + "aaa";
+            System.out.println(test);
+            char[] d = test.toCharArray();
+            layout[i] = d;
+        }
+        //fill yellow
+        for (int i = 9; i < 12; i++) {
+            System.out.println("input yellow:");
+            String test = "aaa"+ scanner.nextLine() + "aaa";
+            System.out.println(test);
+            char[] d = test.toCharArray();
+            layout[i] = d;
+        }
+        cube.setCubePosition(layout);
+        // System.out.println(cube.checkCompletion());
+        scanner.close();
     }
 
     public String generateScramble() {

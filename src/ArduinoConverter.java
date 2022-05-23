@@ -18,16 +18,18 @@ public class ArduinoConverter {
         String turns = "";
         for (int i = 0; i < optimised.length; i++) {
             turns = turns + rotateToSide(returnSide(optimised[i][0])) + getArduinoMove(optimised[i][0], optimised[i][1]) + "#";
-            // cubeRotationsEffectImplementation(optimised[i][0],optimised[i][1]);
         }
     }
 
-    public int getArduinoMove(String rotation, String number) {
+    public String getArduinoMove(String rotation, String number) {
+        String turns = "";
         if (rotation.equals("x")||rotation.equals("y")||rotation.equals("z")) {
-            return Integer.parseInt(number) + 3;
+            turns = ""+Integer.parseInt(number) + 3;
+            turns = "7#" + turns + "#8";
         } else {
-            return Integer.parseInt(number);
+            turns = ""+Integer.parseInt(number);
         }
+        return turns;
     }
 
     public void cubeRotationsEffectImplementation(String turntype,String pTurns) { // name tentative; when cube rotations are done, the
