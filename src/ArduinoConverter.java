@@ -18,7 +18,7 @@ public class ArduinoConverter {
         String turns = "";
         for (int i = 0; i < optimised.length; i++) {
             turns = turns + rotateToSide(returnSide(optimised[i][0])) + getArduinoMove(optimised[i][0], optimised[i][1]) + "#";
-            cubeRotationsEffectImplementation(optimised[i][0],optimised[i][1]);
+            // cubeRotationsEffectImplementation(optimised[i][0],optimised[i][1]);
         }
     }
 
