@@ -29,9 +29,12 @@ public class App {
         // cs.solveCube();
         // System.out.println(cube.checkCompletionFinal());
         // test();
-        this.inputCubePosition();
-        cs.solveCube();
-        System.out.println(cube.checkCompletion());
+        // this.inputCubePosition();
+        // cs.solveCube();
+        // System.out.println(cube.checkCompletion());
+        String solve = cs.solveCube();
+        ac.testSplit(solve);
+
     }
 
     public static void main(String[] args) throws Exception {

@@ -32,10 +32,10 @@ void loop() {
       digitalWrite(in1, HIGH);
       digitalWrite(in2, LOW);
       analogWrite(GSM1, 255);
-      delay(157);
+      delay(100);
       digitalWrite(in1, LOW);
       digitalWrite(in2, HIGH);
-      delay(22); // counter rotation to stop the motor
+      delay(20); // counter rotation to stop the motor
       digitalWrite(in1, LOW);
       digitalWrite(in2, LOW);
       delay(720);
@@ -46,10 +46,10 @@ void loop() {
       digitalWrite(in1, HIGH);
       digitalWrite(in2, LOW);
       analogWrite(GSM1, 255);
-      delay(316);
+      delay(200);
       digitalWrite(in1, LOW);
       digitalWrite(in2, HIGH);
-      delay(23);
+      delay(20);
       digitalWrite(in1, LOW);
       digitalWrite(in2, LOW);
       delay(740);
@@ -60,10 +60,10 @@ void loop() {
       digitalWrite(in1, LOW);
       digitalWrite(in2, HIGH);
       analogWrite(GSM1, 255);
-      delay(176);
+      delay(100);
       digitalWrite(in1, HIGH);
       digitalWrite(in2, LOW);
-      delay(21);
+      delay(20);
       digitalWrite(in1, LOW);
       digitalWrite(in2, LOW);
       delay(720);
@@ -71,83 +71,83 @@ void loop() {
     // turns with hand
     if (input == '4') //quarter turn like y'
     {
-      Serial.println("move_1");
+      Serial.println("move_4");
       digitalWrite(in1, HIGH);
       digitalWrite(in2, LOW);
       analogWrite(GSM1, 255);
-      delay(127);
+      delay(141);
       digitalWrite(in1, LOW);
       digitalWrite(in2, HIGH);
-      delay(22); // counter rotation to stop the motor
+      delay(20); // counter rotation to stop the motor
       digitalWrite(in1, LOW);
       digitalWrite(in2, LOW);
-      delay(500);
+      delay(720);
     }
     if (input == '5')
     {
-      Serial.println("move_2"); // half turn like y2
-      digitalWrite(in1, HIGH);
+      Serial.println("move_5"); // half turn like y2
+     digitalWrite(in1, HIGH);
       digitalWrite(in2, LOW);
       analogWrite(GSM1, 255);
-      delay(272);
+      delay(270);
       digitalWrite(in1, LOW);
       digitalWrite(in2, HIGH);
-      delay(23);
+      delay(20);
       digitalWrite(in1, LOW);
       digitalWrite(in2, LOW);
-      delay(500);
+      delay(740);
     }
     if (input == '6') // reverse quarter turn like y
     {
-      Serial.println("move_3");
-      digitalWrite(in1, LOW);
+      Serial.println("move_6");
+     digitalWrite(in1, LOW);
       digitalWrite(in2, HIGH);
       analogWrite(GSM1, 255);
-      delay(127);
+      delay(141);
       digitalWrite(in1, HIGH);
       digitalWrite(in2, LOW);
-      delay(22);
+      delay(20);
       digitalWrite(in1, LOW);
       digitalWrite(in2, LOW);
-      delay(500);
+      delay(720);
     }
     // hand
     if (input == '7')
     {
-      Serial.println("move_4");
+      Serial.println("move_7");
+      analogWrite(GSM2, 200);
       digitalWrite(in3, LOW);
       digitalWrite(in4, HIGH);
-      analogWrite(GSM2, 255);
-      delay(200);
+      delay(175);
       digitalWrite(in3, LOW);
       digitalWrite(in4, LOW);
       delay(700);
     }
     if (input == '8')
     {
-      Serial.println("move_5");
+      Serial.println("move_8");
+      analogWrite(GSM2, 200);
       digitalWrite(in3, HIGH);
       digitalWrite(in4, LOW);
-      analogWrite(GSM2, 200);
-      delay(270);
+      delay(195);
       digitalWrite(in3, LOW);
       digitalWrite(in4, LOW);
       delay(700);
     }
     if (input == '9')
     {
-      Serial.println("move_6");
+      Serial.println("move_9");
       digitalWrite(in3, HIGH);
       digitalWrite(in4, LOW);
       analogWrite(GSM2, 200);
-      delay(285); //move back
+      delay(200); //move back
       digitalWrite(in3, LOW);
       digitalWrite(in4, LOW);
       delay(300); //wait
       digitalWrite(in3, LOW);
       digitalWrite(in4, HIGH);
       analogWrite(GSM2, 255);
-      delay(158); // move forward
+      delay(110); // move forward
       digitalWrite(in3, LOW);
       digitalWrite(in4, LOW);
       delay(600);

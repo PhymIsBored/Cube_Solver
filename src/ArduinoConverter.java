@@ -11,46 +11,53 @@ public class ArduinoConverter {
         handUp = true;
     }
 
-    public void testSplit() {  // the hand needs to be opened and closed depending on what move is being executed
-        String moves = "M#E";
+    public void testSplit(String moves) {  // the hand needs to be opened and closed depending on what move is being executed // this should now work 
+        // String moves = "M#E";
         String[] split = makeIntoSideRotations(moves);
         String[][] optimised = optimiseRotations(split);
         String turns = "";
         for (int i = 0; i < optimised.length; i++) {
-            turns = turns + rotateToSide(returnSide(optimised[i][0])) + getArduinoMove(optimised[i][0], optimised[i][1]) + "#";
+            turns = turns + rotateToSide(returnSide(optimised[i][0])) + getArduinoMove(optimised[i][0], optimised[i][1]);
         }
+        System.out.println(turns);
+        printArduinoText(turns);
+    }
+
+    public void printArduinoText(String pInput) {
+        pInput = pInput.replaceAll("#", "");
+        System.out.println(pInput);
     }
 
     public String getArduinoMove(String rotation, String number) {
         String turns = "";
         if (rotation.equals("x")||rotation.equals("y")||rotation.equals("z")) {
-            turns = ""+Integer.parseInt(number) + 3;
-            turns = "7#" + turns + "#8";
+            turns = ""+(Integer.parseInt(number) + 3);
+            turns = "7#" + turns + "#8#";
         } else {
-            turns = ""+Integer.parseInt(number);
+            turns = ""+Integer.parseInt(number) + "#";
         }
         return turns;
     }
 
-    public void cubeRotationsEffectImplementation(String turntype,String pTurns) { // name tentative; when cube rotations are done, the
-                                                                   // position of the cube changes, but the code doesnt
-                                                                   // reflect that
-        if (turntype.equals("x")||turntype.equals("y")||turntype.equals("z")) { //this is only done if the rotation is a cube rotation
-            switch (pTurns) {
-                case "1":
-                    ring = ring.substring(1) + ring.charAt(0);
-                    break;
-                case "2":
-                    ring = ring.substring(2) + ring.substring(0, 2);
-                    break;
-                case "3":
-                    ring = ring.charAt(3) + ring.substring(0, 3);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    // public void cubeRotationsEffectImplementation(String turntype,String pTurns) { // name tentative; when cube rotations are done, the
+    //                                                                // position of the cube changes, but the code doesnt
+    //                                                                // reflect that
+    //     if (turntype.equals("x")||turntype.equals("y")||turntype.equals("z")) { //this is only done if the rotation is a cube rotation
+    //         switch (pTurns) {
+    //             case "1":
+    //                 ring = ring.substring(1) + ring.charAt(0);
+    //                 break;
+    //             case "2":
+    //                 ring = ring.substring(2) + ring.substring(0, 2);
+    //                 break;
+    //             case "3":
+    //                 ring = ring.charAt(3) + ring.substring(0, 3);
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     }
+    // }
 
     public String[] makeIntoSideRotations(String moves) {
         String[] split = moves.split("#");
@@ -70,14 +77,13 @@ public class ArduinoConverter {
                 turns = rotateRing(target);
                 if (turns == null) {
                     makeX();
-                    output = output + "7#";
+                    output = output + "9#";
                 }
             } while (turns == null);
             turns = output + turns;
             // move the face to the bottom
-            makeX(); // this func still uses arduino notation, it has to, implement this
-                     // differently!!!!
-            turns = turns + "7#";
+            makeX();
+            turns = turns + "9#";
         }
         if (turns == null) {
             return "";
@@ -400,10 +406,8 @@ public class ArduinoConverter {
 
             default:
                 System.out.println(pInput);
-
-                // System.out.println("unknown");
-                throw new Error("unknown move: " + pInput);
-            //
+                break;
         }
+        return null;
     }
 }
