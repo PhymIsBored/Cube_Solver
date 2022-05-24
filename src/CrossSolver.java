@@ -11,21 +11,21 @@ public class CrossSolver {
     }
 
     public String solveWhiteCross() {
-        String input = orientCube() + "\n"; // orient cube executes the moves in the function
+        String input = orientCube(); // orient cube executes the moves in the function
         while (solveWhiteBottom() != null) {
-            input = input + solveWhiteBottom() + "\n";
+            input = input + solveWhiteBottom();
             nc.executeString(solveWhiteBottom());
         }
         while (solveWhiteSide() != null) {
-            input = input + solveWhiteSide() + "\n";
+            input = input + solveWhiteSide();
             nc.executeString(solveWhiteSide());
         }
         while (solveWhiteBottom() != null) {
-            input = input + solveWhiteBottom() + "\n";
+            input = input + solveWhiteBottom();
             nc.executeString(solveWhiteBottom());
         }
         while (solveWhiteTop() != null) {
-            input = input + solveWhiteTop() + "\n";
+            input = input + solveWhiteTop();
             nc.executeString(solveWhiteTop());
         }
         return input;
