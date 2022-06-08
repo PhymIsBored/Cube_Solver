@@ -10,3 +10,26 @@ y2
 
 Hand (rename):
 x is the same as Cube x'
+
+
+Arduino rotation:
+
+table:
+	1 quarter turn // attention this needs to be like y' clear
+	2 half turn clear
+	3 negative quarter turn not really clear but whatever
+	
+	// quarter turn without hand // like y
+	// half turn without hand
+	// negative quarter turn without hand
+	
+hand:
+	4 open
+	5 close
+	6 rotate cube
+
+Problems:
+1. find a way to reset the position of the motor. Currently the rotation works, but it is offset at the beginning and it keeps that offset. This offset needs to be reset.
+2. 
+	
+rotation tests:

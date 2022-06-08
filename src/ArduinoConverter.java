@@ -1,32 +1,21 @@
 public class ArduinoConverter {
-    private Cube cube;
     private char bottom;
     private String ring;
     private boolean handUp;
 
-    public ArduinoConverter(Cube pCube) {
-        cube = pCube;
-        ring = "obrg"; // replace these with the actual position
-        bottom = 'w'; // default position, white is bottom
-        handUp = true;
+    public ArduinoConverter() {
+        bottom = 'w';
+        ring = "ogrb"; // obrg
+        handUp = false;
     }
 
-    public void testSplit(String moves) { // the hand needs to be opened and closed depending on what move is being
-                                          // executed // this should now work
-        // String moves = "M#E";
-        if (moves==null) {
-            System.out.println("no moves");
-        } else {
-            String[] split = makeIntoSideRotations(moves);
-            String[][] optimised = optimiseRotations(split);
-            String turns = "";
-            for (int i = 0; i < optimised.length; i++) {
-                turns = turns + rotateToSide(returnSide(optimised[i][0]))
-                        + getArduinoMove(optimised[i][0], optimised[i][1]);
-            }
-            System.out.println(turns);
-            printArduinoText(turns);
-        }
+    public void convertInput(String pInput) {
+        String[] split = makeIntoSideRotations(pInput); // convert pInput to array with side rotations
+        String[][] optimised = optimiseRotations(split); // convert to optimised array
+        // turn optimised into arduino rotations
+        String arduinoRotations = convertToArduinoRotations(optimised);
+        System.out.println(arduinoRotations);
+        printArduinoText(arduinoRotations);
     }
 
     public void printArduinoText(String pInput) {
@@ -34,75 +23,86 @@ public class ArduinoConverter {
         System.out.println(pInput);
     }
 
-    public String getArduinoMove(String rotation, String number) {
+    private String convertToArduinoRotations(String[][] optimised) { // this doesnt turn to the right side yet
         String turns = "";
-        if (rotation.equals("x") || rotation.equals("y") || rotation.equals("z")) {
-            turns = "" + (Integer.parseInt(number) + 3);
-            turns = "7#" + turns + "#8#";
-        } else {
-            turns = "" + Integer.parseInt(number) + "#";
+        for (int i = 0; i < optimised.length; i++) {
+            // turn to the right side
+            turns = turns + rotateToSide(returnSide(optimised[i][0]));
+            // determine if hand needs to be up or down
+            // then move it either up or down
+            if (optimised[i][0].equals("x") || optimised[i][0].equals("y") || optimised[i][0].equals("z")) { // if it is
+                                                                                                             // a cube
+                                                                                                             // rotation
+                // if the hand is down move it up with 4
+                if (!handUp) {
+                    turns = turns + "4#" + optimised[i][1] + "#";
+                    handUp = true;
+                } else {
+                    turns = turns + optimised[i][1] + "#";
+                }
+            } else { // if it is a side rotation
+                // if the hand is up move it down with 5
+                if (handUp) {
+                    turns = turns + "5#" + optimised[i][1] + "#";
+                    handUp = false;
+                } else {
+                    turns = turns + optimised[i][1] + "#";
+                }
+            }
         }
         return turns;
     }
 
-    // public void cubeRotationsEffectImplementation(String turntype,String pTurns)
-    // { // name tentative; when cube rotations are done, the
-    // // position of the cube changes, but the code doesnt
-    // // reflect that
-    // if (turntype.equals("x")||turntype.equals("y")||turntype.equals("z")) {
-    // //this is only done if the rotation is a cube rotation
-    // switch (pTurns) {
-    // case "1":
-    // ring = ring.substring(1) + ring.charAt(0);
-    // break;
-    // case "2":
-    // ring = ring.substring(2) + ring.substring(0, 2);
-    // break;
-    // case "3":
-    // ring = ring.charAt(3) + ring.substring(0, 3);
-    // break;
-    // default:
-    // break;
-    // }
-    // }
-    // }
-
-    public String[] makeIntoSideRotations(String moves) {
-        String[] split = moves.split("#");
-        String opt = "";
-        for (String string : split) {
-            opt = opt + breakDown(string);
-        }
-        split = opt.split("#");
-        return split;
-    }
-
-    public String rotateToSide(char target) { // turns the side needed to perform the turn to the bottom
-        if (target==0) {
+    public String rotateToSide(char pSide) {
+        if (pSide == 0) {
             return null;
         }
-        String turns = null;
-        String output = "";
-        if (bottom != target) {
-            do {
-                turns = rotateRing(target);
-                if (turns == null) {
-                    makeX();
-                    output = output + "9#";
+        String turns = "";
+        if (bottom != pSide) { // if the bottom is not already correct
+            turns = rotateRing(pSide); // check if the correct side can be rotated to the front
+            if (turns == null) { // if the correct side can not be roted to the front, rotate X
+                // check if the hand is up or down
+                if (handUp) { // if the hand is up, turn it down
+                    turns = "5#";
+                    handUp = false;
+                } // if the hand is down, leave it down
+                  // do X at some point here
+                  // !! ^^^
+                makeXrot();
+                turns = "6#";
+                turns = turns + rotateRing(pSide); // rotate the side to the front
+            } else { // if it can be rotated turn the hand up before
+                if (!handUp) {
+                    turns = "4#" + turns;
+                    handUp = true;
                 }
-            } while (turns == null);
-            turns = output + turns;
-            // move the face to the bottom
-            makeX();
-            turns = turns + "9#";
-        }
-        if (turns == null) {
-            return "";
+            }
+            if (handUp) { // if the hand is up, turn it down
+                turns = turns + "5#";
+                handUp = false;
+            }
+            makeXrot();
+            turns = turns + "6#";
         }
         return turns;
     }
 
-    public void makeX() { // rename this
+    public String rotateRing(char target) {
+        if (target == ring.charAt(0)) {
+            return "";
+        }
+        int turns = 0;
+        for (int i = 0; i < 4; i++) {
+            if (target == ring.charAt(0)) {
+                return Integer.toString(turns) + "#"; // return the number of turns
+            }
+            ring = ring.substring(1) + ring.charAt(0);
+            turns++;
+        }
+        return null;
+    }
+
+    public void makeXrot() { // rename this
         char beforeBottom = bottom;
         bottom = ring.charAt(0);
         ring = "" + getOppositeSide(beforeBottom) + ring.charAt(1) + beforeBottom + ring.charAt(3);
@@ -129,34 +129,18 @@ public class ArduinoConverter {
         return 0;
     }
 
-    public String rotateRing(char target) {
-        if (target == ring.charAt(0)) {
-            return "";
+    public String[] makeIntoSideRotations(String moves) {
+        String[] split = moves.split("#");
+        String opt = "";
+        for (String string : split) {
+            opt = opt + breakDown(string);
         }
-        int turns = 0;
-        for (int i = 0; i < 4; i++) {
-            if (ring.charAt(0) == target) {
-                if (turns == 0) {
-                    return Integer.toString(turns) + "#";
-                }
-                return Integer.toString(turns + 3) + "#";
-            }
-            ring = ring.substring(1) + ring.charAt(0);
-            turns++;
-        }
-        return null;
-    }
-
-    public String replaceInput(String input) { // # should not be the first char in a string
-        input = input.replaceAll("##", "#");
-        if (input.charAt(0) == '#') {
-            input = input.substring(1);
-        }
-        return input;
+        split = opt.split("#");
+        return split;
     }
 
     public String[][] optimiseRotations(String[] pInput) { // make two separate Strings with turn and number
-        String previous = pInput[0]; // shouldnt this be 0
+        String previous = pInput[0];
         String optRot = "";
         String optNum = "";
         int counter = 0;
@@ -184,7 +168,7 @@ public class ArduinoConverter {
     }
 
     public char returnSide(String pInput) { // returns what side of the cube must be facing down to perform the turn
-                                            // not functional
+        // not functional
         char ret = 0;
         switch (pInput.charAt(0)) {
             case 'R':
@@ -206,13 +190,13 @@ public class ArduinoConverter {
                 ret = 'r';
                 break;
             case 'x':
-                ret = 'g';
+                ret = 'b';
                 break;
             case 'y':
-                ret = 'w';
+                ret = 'y';
                 break;
             case 'z':
-                ret = 'r';
+                ret = 'o';
                 break;
             default:
                 break;
@@ -221,8 +205,6 @@ public class ArduinoConverter {
     }
 
     public String breakDown(String pInput) { // breaks the notation down to the side rotations necessary to perform the
-                                             // turn
-
         // this thing is broken rn, fix this!!!!
         switch (pInput) {
             // cube rotations

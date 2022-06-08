@@ -1,7 +1,7 @@
 // import java.util.Scanner;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-// import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeUnit;
 
 public class App {
     private Cube cube;
@@ -17,37 +17,32 @@ public class App {
         cr = new CrossSolver(cube, nc);
         sf = new SolveF2L(cube, nc);
         cs = new CubeSolver(cube, cr, nc, sf);
-        ac = new ArduinoConverter(cube);
+        ac = new ArduinoConverter();
         this.list();
     }
 
     public void list() {
-        // String scramble = generateScramble();
-        // // scramble = "L#B#B#L#S#F#F#E#F#F#M#U#";
-        // System.out.println("Scramble: "+scramble);
-        // nc.executeString(scramble);
-        // cs.solveCube();
-        // System.out.println(cube.checkCompletionFinal());
-        // test();
-        // this.inputCubePosition();
-        // cs.solveCube();
-        // System.out.println(cube.checkCompletion());
-        String solve = cs.solveCube();
-        ac.testSplit(solve);
-
+        //generate scramble
+        String scramble = generateScramble();
+        nc.executeString(scramble);
+        //solve cube
+        String solution = cs.solveCube();
+        
+        //test arduino converter
+        // ac.convertInput("R#L#");
     }
 
     public static void main(String[] args) throws Exception {
-        //     for (int i = 0; i < 499; i++) {
-        //     new App();
-        //     try {
-        //         TimeUnit.MILLISECONDS.sleep(100);
-        //     } catch (InterruptedException e) {
-        //         // TODO Auto-generated catch block
-        //         e.printStackTrace();
-        //     }
-        // }
-        new App();
+            for (int i = 0; i < 499; i++) {
+            new App();
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        // new App();
     }
 
     public void inputCubePosition() {
